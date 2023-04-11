@@ -37,7 +37,7 @@ LDFLAGS = -L lib/ -lmy -lprint
 
 BUILD_DIR = build/
 
-NAME = mysh
+NAME = 42sh
 
 DEBUG ?= 1
 ifeq ($(DEBUG), 1)

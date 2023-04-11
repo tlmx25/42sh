@@ -9,7 +9,7 @@ on:
 
 env:
   MIRROR_URL: git@github.com:EpitechPromo2027/B-PSU-200-REN-2-1-minishell2-tom.lefoix.git
-  EXECUTABLES: lem_in
+  EXECUTABLES: 42sh
 
 jobs:
   check_coding_style:
