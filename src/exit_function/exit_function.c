@@ -14,8 +14,7 @@ void exit_function(char const **arg, env_list *list)
     if (arg != NULL && arg[1] != NULL && my_getnbr(arg[1]) != -898998) {
         exit_status = (char)my_getnbr(arg[1]);
         my_printf("test : %i\n", my_getnbr(arg[1]));
-    }
-    else if (my_arrsize(arg) != 1 && arg != NULL) {
+    } else if (my_arrsize(arg) != 1 && arg != NULL) {
         write(2, "exit: Expression Syntax.\n", 25);
         return;
     }

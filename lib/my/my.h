@@ -7,7 +7,7 @@
 
 #ifndef _MY_H_
     #define _MY_H_
-#include <stddef.h>
+    #include <stddef.h>
     #define _SIZETAB(X) (sizeof(X) / sizeof(X[0]))
     int my_putchar(char c);
     char *my_strstr(char *str, char const *to_find);

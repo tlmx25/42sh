@@ -37,7 +37,7 @@ int my_str_isalpha_env(char const *str)
 {
     if (str == NULL)
         return 0;
-    if (!is_alpha(str[0])  && str[0] != '_') {
+    if (!is_alpha(str[0]) && str[0] != '_') {
         my_printf("%z", "setenv: Variable name must begin with a letter.\n");
         return 0;
     }

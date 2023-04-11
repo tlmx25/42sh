@@ -64,9 +64,9 @@ static int verify_name_redirect(char const *input)
     return 0;
 }
 
-static int verify_invalid_null_cmd(char const *input) {
+static int verify_invalid_null_cmd(char const *input)
+{
     int pipe_activate = 0;
-
     if (!have_name(input, " \t", ";<>|", 0))
         pipe_activate++;
     if (my_get_first_char(input, " \t") == '|') {

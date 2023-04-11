@@ -22,7 +22,6 @@ char *get_valid_pass(char *command, env_list *list)
 
     if (path == NULL)
         path = my_str_to_word_array(IS_NULL_N(find_node("PATH", list)), ":");
-
     if (!access(command, F_OK) && !access(command, X_OK))
         return command;
     if (my_get_first_char(command, " \t") == '.') {
