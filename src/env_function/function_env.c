@@ -1,0 +1,68 @@
+/*
+** EPITECH PROJECT, 2023
+** B-PSU-200-REN-2-1-minishell1-tom.lefoix
+** File description:
+** function_env.c
+*/
+
+#include "mysh.h"
+#include "error_mysh.h"
+
+void print_env_list(UNU char const **arg,env_list *list)
+{
+    for (env_v *node = list->head; node != NULL; node = node->next)
+        my_printf("%s=%s\n", node->name, node->var);
+}
+
+void delete_env_var(char const **name, env_list *list)
+{
+    env_v *node = list->head;
+
+    for (; node != NULL && my_strcmp(node->name, name[1]) != 0;
+    node = node->next);
+    if (node == NULL)
+        return;
+    if (list->head == node)
+        list->head = node->next;
+    if (list->tail == node)
+        list->tail = node->prev;
+    if (node->prev != NULL)
+        node->prev->next = node->next;
+    if (node->next != NULL)
+        node->next->prev = node->prev;
+    list->size -= 1;
+    free_node(&node);
+}
+
+void set_env(char const **arg, env_list *list)
+{
+    env_v *node;
+    if (my_arrsize(arg) == 1) {
+        print_env_list(arg, list);
+        return;
+    }
+    if (my_arrsize(arg) > 3) {
+        my_printf("%z", SE_MANY_ARG, (list->status = 1));
+        return;
+    }
+    if (!my_str_isalpha_env(arg[1])) {
+        list->status = 1;
+        return;
+    }
+
+    if ((node = find_node( arg[1], list)) != NULL) {
+        free(node->var);
+        node->var = my_strdup(arg[2]);
+    } else
+        add_env_var(arg, list);
+}
+
+void unset_env(char const **arg, env_list *list)
+{
+    if (my_arrsize(arg) == 1) {
+        write(2,"unsetenv: Too few arguments.\n", 29);
+        list->status = 1;
+        return;
+    }
+    delete_env_var(arg, list);
+}

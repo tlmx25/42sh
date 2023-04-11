@@ -1,0 +1,57 @@
+name: check post push
+on:
+  push:
+    branches-ignore:
+      - ga-ignore-
+  pull_request:
+    branches-ignore:
+      - ga-ignore-
+
+env:
+  MIRROR_URL: git@github.com:EpitechPromo2027/B-PSU-200-REN-2-1-minishell2-tom.lefoix.git
+  EXECUTABLES: lem_in
+
+jobs:
+  check_coding_style:
+    runs-on: ubuntu-latest
+    container: ghcr.io/epitech/coding-style-checker:latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: execute coding style checker
+      run: check.sh $(pwd) $(pwd)
+    - name: verify norme
+      run: |
+        bool_error=0
+        while read line; do
+          path=$(echo "$line" | cut -d: -f1)
+          fileLine=$(echo "$line" | cut -d: -f2)
+          type=$(echo "$line" | cut -d: -f3)
+          title=$(echo "$type coding style error")
+          error_num=$(echo "$line" | cut -d: -f4)
+          bool_error=1
+          echo "::error file=$path,line=$fileLine,title=$title::$error_num"
+        done < coding-style-reports.log
+        if [ $bool_error -eq 1 ]
+        then
+          exit 1
+        fi
+
+  check_program_compilation:
+    needs: check_coding_style
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    container: epitechcontent/epitest-docker:latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: build
+      run: |
+        make
+        make clean
+    - name: checking binary exist
+      run: |
+        if [ -f ${{ env.EXECUTABLES }} ]; then
+            exit 0
+        else 
+            echo "::error file=${{ env.EXECUTABLES }},title="Binary"::Binary not found"
+            exit 1
+        fi

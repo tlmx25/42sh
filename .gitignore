@@ -1,0 +1,24 @@
+.idea
+*.o
+*.a
+mysh
+/coding-style-reports.log
+/segfault
+/seg.c
+/test.c
+/tester.sh
+/test
+/test_mouli
+/arm
+/my_test
+test2.c
+test_try.txt
+oklm.txt
+a.out
+/test.txt
+/ test.txt
+*test.txt
+mouli_tests
+map_mini
+tester_out.txt
+/jaime_les_paint_au_chocolat.txt
