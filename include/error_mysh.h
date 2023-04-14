@@ -20,6 +20,8 @@
     #define AMB_RDRECT "Ambiguous output redirect.\n"
     #define MISS_NAME_RDRECT "Missing name for redirect.\n"
     #define INV_NULL_CMD "Invalid null command.\n"
+    #define VAR_CTN_AN "Variable name must contain alphanumeric characters.\n"
+    #define VAR_STR_LET "Variable name must begin with a letter.\n"
     #define IS_RDRECT(X) (X == '<' || X == '>') ? 1 : 0
 
 typedef struct signal_error {

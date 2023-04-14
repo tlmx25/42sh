@@ -14,6 +14,9 @@
     #define IS_NULL(X) (X == NULL) ? NULL : X
     #define FLAG_APPEND O_CREAT | O_WRONLY | O_APPEND
     #define FLAG_ERASE O_CREAT | O_WRONLY | O_TRUNC
+    #define STATUS var->env_var->status
+    #define LOCAL_VAR var->local_var
+    #define ENV_VAR var->env_var
     #define HAVE_NAME_ARG(X) (X[1] == '>') ? &X[1] : X
     #include <unistd.h>
     #include <string.h>
@@ -22,23 +25,24 @@
     #include "my.h"
     #include "myprintf.h"
 
-typedef struct env_v {
+typedef struct var_node {
     char *name;
     char *var;
-    struct env_v *next;
-    struct env_v *prev;
-}env_v;
+    struct var_node *next;
+    struct var_node *prev;
+}var_node;
 
-typedef struct env_list {
-    env_v *head;
-    env_v *tail;
+typedef struct var_list {
+    var_node *head;
+    var_node *tail;
     size_t size;
     int status;
-}env_list;
+}var_list;
 
 typedef struct var {
     char **arg;
-    env_list *list;
+    var_list *env_var;
+    var_list *local_var;
     int fd_redirection_out;
     int fd_redirection_in;
     int dup_stdout;
@@ -48,30 +52,30 @@ typedef struct var {
 
 typedef struct commands {
     char *command;
-    void (*fct)(char const **, env_list *);
+    void (*fct)(char const **, var_s *);
 }command_l;
 
 
 
 int mysh(int ac, char **av, char **env);
-void add_env_var(char const **info, env_list *list);
-env_list *array_to_linkedlist(char **env);
-void free_node(env_v **node);
-void delete_env_var(char const **name, env_list *list);
-void print_env_list(UNU char const **arg,env_list *list);
-void exit_function(char const **arg, env_list *list);
-char **linkedlist_to_array(env_list *list);
-env_v *find_node(char const *name, env_list *list);
-void set_env(char const **arg, env_list *list);
+void add_var(char const **info, var_list *list);
+var_list *array_to_linkedlist(const char **env);
+void free_node(var_node **node);
+void delete_env_var(char const **name, var_list *list);
+void print_env_list(UNU char const **arg, var_s *var);
+void exit_function(char const **arg, var_s *var);
+char **linkedlist_to_array(var_list *list);
+var_node *find_node(char const *name, var_list *list);
+void set_env(char const **arg, var_s *var);
 void exec_sys_function(var_s *variable, char **input);
-void verify_env(env_list *list);
-void free_env(env_list **list);
-void unset_env(char const **arg, env_list *list);
+void verify_env(var_s *var);
+void free_list(var_list *list);
+void unset_env(char const **arg, var_s *var);
 int my_str_isalphanum_env(char const *str);
-int my_str_isalpha_env(char const *str);
-void cd_built_in(char const **arg, env_list *list);
+int my_str_isalpha_env(char const *str, char const *command);
+void cd_built_in(char const **arg, var_s *var);
 void separate_command_comma(var_s *variable, char *input);
-void get_command(var_s *variable, char **input);
+void get_command(var_s *var, char **input);
 void verify_if_redirection(var_s *variable, char *input);
 void parsing_pipe(var_s *variable, char **input);
 int *add_pid(int *actual_list, int pid);
@@ -79,4 +83,10 @@ void erase_name(char **array);
 char *get_name(char const *str);
 int is_built_in(char *command);
 char *get_left_redirection(var_s *variable, char *input);
+var_s *init_sh(char const **env);
+void open_write_list(var_list *list, char const *filepath);
+var_list *init_list_variable(char const *filepath);
+void free_var(var_s *var);
+void print_local_variable(UNU char const **arg, var_s *var);
+void set_local_var(const char **info, var_s *var);
 #endif

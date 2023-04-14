@@ -8,15 +8,15 @@
 #include "mysh.h"
 #include "error_mysh.h"
 
-void print_env_list(UNU char const **arg,env_list *list)
+void print_env_list(UNU char const **arg, var_s *var)
 {
-    for (env_v *node = list->head; node != NULL; node = node->next)
+    for (var_node *node = var->env_var->head; node != NULL; node = node->next)
         my_printf("%s=%s\n", node->name, node->var);
 }
 
-void delete_env_var(char const **name, env_list *list)
+void delete_env_var(char const **name, var_list *list)
 {
-    env_v *node = list->head;
+    var_node *node = list->head;
 
     for (; node != NULL && my_strcmp(node->name, name[1]) != 0;
     node = node->next);
@@ -34,35 +34,35 @@ void delete_env_var(char const **name, env_list *list)
     free_node(&node);
 }
 
-void set_env(char const **arg, env_list *list)
+void set_env(char const **arg, var_s *var)
 {
-    env_v *node;
+    var_node *node;
     if (my_arrsize(arg) == 1) {
-        print_env_list(arg, list);
+        print_env_list(arg, var);
         return;
     }
     if (my_arrsize(arg) > 3) {
-        my_printf("%z", SE_MANY_ARG, (list->status = 1));
+        my_printf("%z", SE_MANY_ARG, (STATUS = 1));
         return;
     }
-    if (!my_str_isalpha_env(arg[1])) {
-        list->status = 1;
+    if (!my_str_isalpha_env(arg[1], "setenv: ")) {
+        STATUS = 1;
         return;
     }
 
-    if ((node = find_node( arg[1], list)) != NULL) {
+    if ((node = find_node(arg[1], ENV_VAR)) != NULL) {
         free(node->var);
         node->var = my_strdup(arg[2]);
     } else
-        add_env_var(arg, list);
+        add_var(arg, ENV_VAR);
 }
 
-void unset_env(char const **arg, env_list *list)
+void unset_env(char const **arg, var_s *var)
 {
     if (my_arrsize(arg) == 1) {
         write(2,"unsetenv: Too few arguments.\n", 29);
-        list->status = 1;
+        STATUS = 1;
         return;
     }
-    delete_env_var(arg, list);
+    delete_env_var(arg, ENV_VAR);
 }

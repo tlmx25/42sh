@@ -34,7 +34,7 @@ static char *create_redirection(var_s *variable, char *input)
 
 static void managing_pipe(var_s *variable, char **pipe_input, int size)
 {
-    int error;
+    int error = 0;
 
     variable->pid_list = my_calloc(sizeof(int) * (size + 1));
     if (variable->pid_list == NULL) {
@@ -46,7 +46,7 @@ static void managing_pipe(var_s *variable, char **pipe_input, int size)
     for (int i = 0; variable->pid_list[i] != -2; i++) {
         waitpid(variable->pid_list[i], &error, 0);
         if (WEXITSTATUS(error) != 0)
-            variable->list->status = WEXITSTATUS(error);
+            variable->env_var->status = WEXITSTATUS(error);
     }
     free(variable->pid_list);
 }

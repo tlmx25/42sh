@@ -94,14 +94,14 @@ void separate_command_comma(var_s *variable, char *input)
 
     if (verify_name_redirect(input) || verify_invalid_null_cmd(input) ||
     verify_ambiguous_redirect(input)) {
-        variable->list->status = 1;
+        variable->env_var->status = 1;
         return;
     }
     array_comma = my_str_to_word_array(input, ";");
     if (array_comma == NULL)
         return;
     for (int i = 0; array_comma[i]; i++) {
-        variable->list->status = 0;
+        variable->env_var->status = 0;
         verify_if_redirection(variable, array_comma[i]);
     }
     free(array_comma);

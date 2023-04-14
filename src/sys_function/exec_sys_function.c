@@ -15,7 +15,7 @@ static const signal_error_t error_signal[] = {
 {SIGABRT, ABRT},
 };
 
-char *get_valid_pass(char *command, env_list *list)
+char *get_valid_pass(char *command, var_list *list)
 {
     static char **path = NULL;
     char *path_temp;
@@ -52,7 +52,7 @@ void manager_fork(var_s *variable, int result_exec)
 {
     if (WIFSIGNALED(result_exec))
         verify_error_sig(result_exec);
-    variable->list->status = WEXITSTATUS(result_exec);
+    variable->env_var->status = WEXITSTATUS(result_exec);
 }
 
 void manager_no_exec(char *command)
@@ -71,10 +71,10 @@ void exec_sys_function(var_s *variable, char **input)
     pid_t pid = fork();
     int result_exec;
     char *path_command;
-    char **env = linkedlist_to_array(variable->list);
+    char **env = linkedlist_to_array(variable->env_var);
     if (pid == 0) {
         signal(SIGINT, SIG_DFL);
-        path_command = get_valid_pass(input[0], variable->list);
+        path_command = get_valid_pass(input[0], variable->env_var);
         if (path_command == NULL || env == NULL)
             exit(1);
         result_exec = execve(path_command, input,env);

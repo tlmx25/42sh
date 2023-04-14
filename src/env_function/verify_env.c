@@ -5,40 +5,41 @@
 ** verify_env.c
 */
 
+#include "error_mysh.h"
 #include "mysh.h"
 
-env_v *find_node(char const *name, env_list *list)
+var_node *find_node(char const *name, var_list *list)
 {
-    env_v *node = list->head;
+    var_node *node = list->head;
     while (node != NULL && my_strcmp(node->name, name) != 0)
         node = node->next;
     return node;
 }
 
-void verify_env(env_list *list)
+void verify_env(var_s *var)
 {
-    env_v *node;
-    if (find_node("PWD", list) == NULL) {
+    var_node *node;
+    if (find_node("PWD", ENV_VAR) == NULL) {
         set_env(AC my_str_to_word_array(my_strcat("setenv=PWD=",
-        getcwd(NULL, 0)), "="), list);
+        getcwd(NULL, 0)), "="), var);
     }
-    if ((node = find_node("SHLVL", list)) == NULL) {
-        set_env(AC my_str_to_word_array("setenv=SHLVL=1", "="), list);
+    if ((node = find_node("SHLVL", ENV_VAR)) == NULL) {
+        set_env(AC my_str_to_word_array("setenv=SHLVL=1", "="), var);
     } else {
         node->var = my_putnbrm(my_getnbr(node->var) + 1);
     }
-    if (find_node("PATH", list) == NULL) {
+    if (find_node("PATH", ENV_VAR) == NULL) {
         set_env(AC my_str_to_word_array("setenv=PATH=/bin:/usr/bin:/usr",
-        "="), list);
+        "="), var);
     }
 }
 
-int my_str_isalpha_env(char const *str)
+int my_str_isalpha_env(char const *str, char const *command)
 {
     if (str == NULL)
         return 0;
     if (!is_alpha(str[0]) && str[0] != '_') {
-        my_printf("%z", "setenv: Variable name must begin with a letter.\n");
+        my_printf("%z%z", command, VAR_STR_LET);
         return 0;
     }
     for (int i = 0; str[i]; i++) {
@@ -46,8 +47,7 @@ int my_str_isalpha_env(char const *str)
             continue;
         if ((str[i] < 'a' || str[i] > 'z') && (str[i] < 'A' || str[i] > 'Z') &&
             (str[i] < '0' || str[i] > '9')) {
-            my_printf("%z", "setenv: Variable name must contain alphanumeric"
-                            " characters.\n");
+            my_printf("%z%z", command, VAR_CTN_AN);
             return 0;
         }
     }

@@ -225,3 +225,4 @@ Test(verify_env, verify_env_modif_shlvl3, .init = redirect_all_std)
     cr_assert_str_eq(find_node("SHLVL", list)->var, "12");
     free_env(&list);
 }
+

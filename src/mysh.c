@@ -13,7 +13,9 @@ static const command_l command_list[] = {
         {"setenv", set_env},
         {"exit", exit_function},
         {"cd", cd_built_in},
-        {"/usr/bin/env", print_env_list}
+        {"/usr/bin/env", print_env_list},
+        {"local", print_local_variable},
+        {"set", set_local_var},
 };
 
 int is_built_in(char *command)
@@ -25,26 +27,21 @@ int is_built_in(char *command)
     return 0;
 }
 
-void get_command(var_s *variable, char **input)
+void get_command(var_s *var, char **input)
 {
     if (input == NULL)
         return;
-    if (my_strcmp( input[0], command_list[3].command) == 0) {
-        close(variable->dup_stdin);
-        close(variable->dup_stdout);
-        exit_function(AC input, variable->list);
-    }
     for (size_t i = 0; i < ARRAY_LENGTH(command_list); i++) {
         if (my_strcmp(command_list[i].command, input[0]) == 0) {
-            command_list[i].fct(AC input, variable->list);
+            command_list[i].fct(AC input, var);
             return;
         }
     }
-    exec_sys_function(variable, input);
+    exec_sys_function(var, input);
     free_tab(input);
 }
 
-void bash_loop(var_s *variable)
+void bash_loop(var_s *var)
 {
     char *input = NULL;
     size_t len = 0;
@@ -53,10 +50,10 @@ void bash_loop(var_s *variable)
         if (isatty(STDIN_FILENO))
             write(1,"$> ", 3);
         if (getline(&input, &len, stdin) == EOF)
-            exit_function(NULL, variable->list);
+            exit_function(NULL, var);
         input[my_strlen(input) - 1] = '\0';
         if (my_get_first_char(input, " \t") != '\0')
-            separate_command_comma(variable, input);
+            separate_command_comma(var, input);
         free(input);
         input = NULL;
     }
@@ -64,21 +61,12 @@ void bash_loop(var_s *variable)
 
 int mysh(UNU int ac, UNU char **av, char **env)
 {
-    var_s variable;
-    variable.list = array_to_linkedlist(env);
+    var_s *variable;
     signal(SIGINT, SIG_IGN);
-    if (variable.list == NULL) {
-        return 1;
-    }
-    verify_env(variable.list);
-    if (variable.list->head == NULL) {
-        exit(84);
-    }
-    variable.fd_redirection_out = 1;
-    variable.fd_redirection_in = 0;
-    variable.dup_stdout = dup(STDOUT_FILENO);
-    variable.dup_stdin = dup(STDIN_FILENO);
-    variable.pid_list = NULL;
-    bash_loop(&variable);
+
+    variable = init_sh((char const **)env);
+    if (variable == NULL)
+        return 84;
+    bash_loop(variable);
     return 0;
 }
