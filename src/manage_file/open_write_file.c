@@ -9,7 +9,8 @@
 #include <stdio.h>
 #include "mysh.h"
 
-void open_write_list(var_list *list, char const *filepath) {
+void open_write_list(var_list *list, char const *filepath)
+{
     FILE *file = fopen(filepath, "w+");
 
     if (file == NULL)

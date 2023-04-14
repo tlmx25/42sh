@@ -29,7 +29,8 @@ int get_nb_line_file(char const *filepath)
     return count;
 }
 
-static char **free_content_file_if_error(char **content_file, size_t nb_line_actual)
+static char **free_content_file_if_error(char **content_file,
+size_t nb_line_actual)
 {
     for (size_t i = 0; i < nb_line_actual; i++)
         free(content_file[i]);
