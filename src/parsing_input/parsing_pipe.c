@@ -16,7 +16,7 @@ void manage_child_part(char **input, var_s *variable, int fd[2], int i)
             dup2(fd[1], STDOUT_FILENO);
         get_command(variable, command);
     }
-    exit(variable->list->status);
+    exit(variable->env_var->status);
 }
 
 void manager_parent_part(int fd[2], var_s *variable, int pid, int last_pipe)

@@ -14,6 +14,10 @@ VPATH += src/sys_function
 VPATH += src/cd_built_in
 VPATH += src/parsing_input
 VPATH += src/exit_function
+VPATH += src/local_variable
+VPATH += src/init
+VPATH += src/destroy
+VPATH += src/manage_file
 
 SRC += main.c
 SRC += mysh.c
@@ -30,6 +34,12 @@ SRC += exit_function.c
 SRC += list_manager.c
 SRC += left_redirection.c
 SRC += manage_array.c
+SRC += manage_local_variable.c
+SRC += init_sh.c
+SRC += get_local_variable.c
+SRC += open_read_file.c
+SRC += open_write_file.c
+SRC += free_var.c
 
 CFLAGS = -I include/ -Wall -Wextra
 
@@ -90,6 +100,7 @@ tests_clean:
 	@ rm -f test_units
 
 my_test: $(OBJ)
+	@rm my_test
 	$(CC) $(filter-out build/main.o, $(OBJ)) test.c -o my_test $(LDFLAGS)
 	@ echo "$(GREEN)test created$(NC)"
 

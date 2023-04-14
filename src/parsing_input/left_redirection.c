@@ -42,7 +42,7 @@ static int simple_left_redirection(char **cut_left_redirect, var_s *variable)
     char *tmp2;
     if (access(name, R_OK) == -1) {
         my_printf("%z%z", name, NO_SUCH_FILE);
-        variable->list->status = 1;
+        variable->env_var->status = 1;
         return 84;
     }
     tmp = my_strcat("cat ", name);

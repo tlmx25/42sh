@@ -7,28 +7,20 @@
 
 #include "mysh.h"
 
-env_v *init_env_var_node(char const **info)
+var_node *init_env_var_node(char const **info)
 {
-    env_v *node = malloc(sizeof(env_v));
-    int get_lvl = (my_strcmp(info[0], "setenv") == 0) ? 2 : 1;
+    var_node *node = malloc(sizeof(var_node));
 
     if (node == NULL)
         return NULL;
-    node->name = my_strdup((my_strcmp(info[0], "setenv") == 0)
-            ? info[1] : info[0]);
-    if (my_arrsize(info) >= get_lvl + 1) {
-        for (int i = get_lvl + 1; info[i]; i++)
-            info[get_lvl] = my_strcat((char *)info[get_lvl],
-        my_strcat("=", (char *)info[i]));
-    }
-    node->var = my_strdup((my_strcmp(info[0], "setenv") == 0)
-            ? info[2] : info[1]);
-    node->prev = NULL;
+    node->name = my_strdup(info[1]);
+    node->var = my_array_to_str(&info[2]);
     node->next = NULL;
+    node->prev = NULL;
     return node;
 }
 
-void free_node(env_v **node)
+void free_node(var_node **node)
 {
     if ((*node)->name != NULL)
         free((*node)->name);
@@ -38,7 +30,7 @@ void free_node(env_v **node)
         free(*node);
 }
 
-void add_env_var(char const **info, env_list *list)
+void add_var(char const **info, var_list *list)
 {
     list->size += 1;
     if (list->head == NULL) {
@@ -51,9 +43,9 @@ void add_env_var(char const **info, env_list *list)
     list->tail = list->tail->next;
 }
 
-env_list *array_to_linkedlist(char **env)
+var_list *array_to_linkedlist(const char **env)
 {
-    env_list *list = malloc(sizeof(env_list));
+    var_list *list = malloc(sizeof(var_list));
     char **line;
 
     if (list == NULL)
@@ -62,20 +54,22 @@ env_list *array_to_linkedlist(char **env)
     list->tail = NULL;
     list->size = 0;
     list->status = 0;
+    if (env == NULL)
+        return list;
     for (int i = 0; env[i]; i++) {
         line = my_str_to_word_array(env[i], "=");
         if (line == NULL)
             return NULL;
-        add_env_var((char const **)(line), list);
+        add_var((char const **) (line), list);
         free_tab(line);
     }
     return list;
 }
 
-char **linkedlist_to_array(env_list *list)
+char **linkedlist_to_array(var_list *list)
 {
     char **env = malloc(sizeof(char *) * (list->size + 1));
-    env_v *node = list->head;
+    var_node *node = list->head;
 
     if (env == NULL)
         return NULL;
