@@ -10,11 +10,12 @@
 var_node *init_env_var_node(char const **info)
 {
     var_node *node = malloc(sizeof(var_node));
+    int start = (my_strncmp("set", info[0], 3) == 0) ? 1 : 0;
 
     if (node == NULL)
         return NULL;
-    node->name = my_strdup(info[1]);
-    node->var = my_array_to_str(&info[2]);
+    node->name = my_strdup(info[start]);
+    node->var = my_array_to_str(&info[start + 1]);
     node->next = NULL;
     node->prev = NULL;
     return node;
@@ -59,7 +60,7 @@ var_list *array_to_linkedlist(const char **env)
     for (int i = 0; env[i]; i++) {
         line = my_str_to_word_array(env[i], "=");
         if (line == NULL)
-            return NULL;
+            continue;
         add_var((char const **) (line), list);
         free_tab(line);
     }

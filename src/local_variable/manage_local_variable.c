@@ -5,6 +5,7 @@
 ** manage_local_variable.c
 */
 
+#include "file_sh.h"
 #include "mysh.h"
 
 void print_local_variable(UNU char const **arg, var_s *var)
@@ -29,6 +30,8 @@ void set_local_var(const char **info, var_s *var)
     if ((node = find_node(info[1], LOCAL_VAR)) != NULL) {
         free(node->var);
         node->var = my_strdup(info[2]);
-    } else
+    } else {
         add_var(info, LOCAL_VAR);
+        open_write_list(LOCAL_VAR, LOCAL_VAR_FILE, var->dup_stdout);
+    }
 }
