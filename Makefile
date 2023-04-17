@@ -14,7 +14,7 @@ VPATH += src/sys_function
 VPATH += src/cd_built_in
 VPATH += src/parsing_input
 VPATH += src/exit_function
-VPATH += src/local_variable
+VPATH += src/list
 VPATH += src/init
 VPATH += src/destroy
 VPATH += src/manage_file
@@ -34,12 +34,13 @@ SRC += exit_function.c
 SRC += list_manager.c
 SRC += left_redirection.c
 SRC += manage_array.c
-SRC += manage_local_variable.c
 SRC += init_sh.c
 SRC += get_local_variable.c
 SRC += open_read_file.c
 SRC += open_write_file.c
 SRC += free_var.c
+SRC += alias.c
+SRC += manage_local_variable.c
 
 CFLAGS = -I include/ -Wall -Wextra
 
@@ -57,6 +58,7 @@ endif
 $(BUILD_DIR)%.o: %.c
 	@mkdir -p $(@D)
 	#@echo "  CC       $<      $@"
+	#@echo "$(notdir $(CURDIR)): C '$<'"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 OBJ = $(SRC:%.c=$(BUILD_DIR)%.o)
@@ -82,7 +84,7 @@ clean: tests_clean
 	rm -f test
 	@ echo "$(RED)clean successful !"
 
-fclean: clean
+fclean: clean tests_clean
 	make fclean -C lib/my/
 	make fclean -C lib/my_printf/
 	rm -f $(NAME)

@@ -7,16 +7,16 @@
 
 #include "mysh.h"
 
-void manage_child_part(char **input, var_s *variable, int fd[2], int i)
+void manage_child_part(char **input, var_s *var, int fd[2], int i)
 {
     char **command = my_str_to_word_array(input[ABS(i)], " \t");
 
     if (command != NULL) {
         if (input[i + 1])
             dup2(fd[1], STDOUT_FILENO);
-        get_command(variable, command);
+        get_command(var, command);
     }
-    exit(variable->env_var->status);
+    exit(var->env_var->status);
 }
 
 void manager_parent_part(int fd[2], var_s *variable, int pid, int last_pipe)
@@ -44,25 +44,34 @@ void manager_last_part_built_in(var_s *variable, char *input, int fd[2])
     close(fd[1]);
 }
 
+static int exec_command_pipe(char **input, int fd[2], var_s *var, int i)
+{
+    int pid;
+
+    input[i] = check_alias(input[i], var);
+    if (input[i + 1] == NULL && is_built_in(input[i])) {
+        manager_last_part_built_in(var, input[i], fd);
+        return 1;
+    }
+    pid = fork();
+    if (pid == -1)
+        return 1;
+    if (pid == 0)
+        manage_child_part(input, var, fd, i);
+    else
+        manager_parent_part(fd, var, pid, (input[i + 1]) ? 0 : 1);
+    return 0;
+}
+
 void parsing_pipe(var_s *variable, char **input)
 {
     int fd[2];
-    int pid;
 
     if (pipe(fd) == -1)
         return;
     for (int i = 0; input[i]; i++) {
-        if (input[i + 1] == NULL && is_built_in(input[i])) {
-            manager_last_part_built_in(variable, input[i], fd);
+        if (exec_command_pipe(input, fd, variable, i))
             break;
-        }
-        pid = fork();
-        if (pid == -1)
-            break;
-        if (pid == 0)
-            manage_child_part(input, variable, fd, i);
-        else
-            manager_parent_part(fd, variable, pid, (input[i + 1]) ? 0 : 1);
     }
     close(fd[0]);
 }

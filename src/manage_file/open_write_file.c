@@ -11,7 +11,7 @@
 
 void open_write_list(var_list *list, char const *filepath, int fd_stdout)
 {
-    int fd = open(filepath, FLAG_ERASE);
+    int fd = open(filepath, FLAG_ERASE, FLAG_PERM);
 
     if (fd == -1)
         return;

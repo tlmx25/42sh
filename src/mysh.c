@@ -8,17 +8,19 @@
 #include "mysh.h"
 
 static const command_l command_list[] = {
-        {"env", print_env_list},
-        {"unsetenv", unset_env},
-        {"setenv", set_env},
-        {"exit", exit_function},
-        {"cd", cd_built_in},
+        {"env",          print_env_list},
+        {"unsetenv",     unset_env},
+        {"setenv",       set_env},
+        {"exit",         exit_function},
+        {"cd",           cd_built_in},
         {"/usr/bin/env", print_env_list},
-        {"local", print_local_variable},
-        {"set", set_local_var},
+        {"set",          set_local_var},
+        {"unset",        unset_local_var},
+        {"unalias",        unset_alias},
+        {"alias",        add_alias},
 };
 
-int is_built_in(char *command)
+int is_built_in(const char *command)
 {
     for (size_t i = 0; i < ARRAY_LENGTH(command_list); i++) {
         if (my_str_in_str(command, command_list[i].command))

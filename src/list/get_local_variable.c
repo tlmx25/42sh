@@ -16,5 +16,6 @@ var_list *init_list_variable(char const *filepath)
     var_list *list;
 
     list = array_to_linkedlist((char const **)content_file);
+    free_tab(content_file);
     return list;
 }

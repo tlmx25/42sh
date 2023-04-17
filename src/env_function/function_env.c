@@ -14,11 +14,11 @@ void print_env_list(UNU char const **arg, var_s *var)
         my_printf("%s=%s\n", node->name, node->var);
 }
 
-void delete_env_var(char const **name, var_list *list)
+void delete_env_var(const char *name, var_list *list)
 {
     var_node *node = list->head;
 
-    for (; node != NULL && my_strcmp(node->name, name[1]) != 0;
+    for (; node != NULL && my_strcmp(node->name, name) != 0;
     node = node->next);
     if (node == NULL)
         return;
@@ -64,5 +64,5 @@ void unset_env(char const **arg, var_s *var)
         STATUS = 1;
         return;
     }
-    delete_env_var(arg, ENV_VAR);
+    delete_env_var(arg[1], ENV_VAR);
 }

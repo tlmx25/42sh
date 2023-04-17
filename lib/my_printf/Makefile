@@ -45,14 +45,16 @@ SRC =	src/conversion/flag_b.c	\
 		src/str/my_error_flag.c
 
 
-OBJ = $(SRC:.c=.o)
-
-BUIL_DIR = build/
+BUILD_DIR = build/
 
 BLUE = \033[1;34m
 
-.c.o:
-	@ gcc -c $< -o $@ $(CFLAGS)
+$(BUILD_DIR)%.o: %.c
+	@mkdir -p $(@D)
+	#@echo "  CC       $<      $@"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+OBJ = $(SRC:%.c=$(BUILD_DIR)%.o)
 
 CFLAGS = -I include/ -Wextra -Wall
 
@@ -65,12 +67,11 @@ $(NAME): $(OBJ)
 	@ mv $(NAME) ../
 	@ mkdir -p ../../include
 	@ cp include/myprintf.h ../../include
-	mkdir -p $(BUIL_DIR)
-	mv $(OBJ) $(BUIL_DIR)
 	@ echo "$(BLUE)Compilation of libprint.a done"
 
 clean:
-	rm -rf $(BUIL_DIR)
+	rm -f $(OBJ)
+	rm -rf $(BUILD_DIR)
 	rm -f *~
 	rm -f \#*\#
 	rm -f vgcore.*

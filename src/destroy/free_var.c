@@ -11,6 +11,7 @@ void free_var(var_s *var)
 {
     free_list(ENV_VAR);
     free_list(LOCAL_VAR);
+    free_list(ALIAS);
     close(var->dup_stdin);
     close(var->dup_stdout);
 }
