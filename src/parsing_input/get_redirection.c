@@ -62,6 +62,7 @@ static void choice_execution_function(char *input, var_s *variable)
         managing_pipe(variable, pipe_input, size);
     } else
         get_command(variable, my_str_to_word_array(input, " \t"));
+    free(input);
     free_tab(pipe_input);
 }
 

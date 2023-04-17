@@ -10,12 +10,12 @@
 var_node *init_env_var_node(char const **info)
 {
     var_node *node = malloc(sizeof(var_node));
-    int start = (my_strncmp("set", info[0], 3) == 0) ? 1 : 0;
+    int start = (is_built_in(SC info[0])) ? 1 : 0;
 
     if (node == NULL)
         return NULL;
     node->name = my_strdup(info[start]);
-    node->var = my_array_to_str(&info[start + 1]);
+    node->var = my_array_to_str_separator(&info[start + 1], " ");
     node->next = NULL;
     node->prev = NULL;
     return node;
@@ -71,12 +71,15 @@ char **linkedlist_to_array(var_list *list)
 {
     char **env = malloc(sizeof(char *) * (list->size + 1));
     var_node *node = list->head;
+    char *tmp;
 
     if (env == NULL)
         return NULL;
     env[list->size] = NULL;
     for (size_t i = 0; i < list->size; i++) {
-        env[i] = my_strcat(my_strcat(node->name, "="), node->var);
+        tmp = my_strcat(node->name, "=");
+        env[i] = my_strcat(tmp, node->var);
+        free(tmp);
         node = node->next;
     }
     return env;

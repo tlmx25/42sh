@@ -25,6 +25,7 @@ int get_nb_line_file(char const *filepath)
         line = NULL;
         count += 1;
     }
+    free(line);
     fclose(fd);
 
     return count;

@@ -19,6 +19,8 @@ var_node *find_node(char const *name, var_list *list)
 void verify_env(var_s *var)
 {
     var_node *node;
+    char *tmp;
+
     if (find_node("PWD", ENV_VAR) == NULL) {
         set_env(AC my_str_to_word_array(my_strcat("setenv=PWD=",
         getcwd(NULL, 0)), "="), var);
@@ -26,7 +28,9 @@ void verify_env(var_s *var)
     if ((node = find_node("SHLVL", ENV_VAR)) == NULL) {
         set_env(AC my_str_to_word_array("setenv=SHLVL=1", "="), var);
     } else {
+        tmp = node->var;
         node->var = my_putnbrm(my_getnbr(node->var) + 1);
+        free(tmp);
     }
     if (find_node("PATH", ENV_VAR) == NULL) {
         set_env(AC my_str_to_word_array("setenv=PATH=/bin:/usr/bin:/usr",

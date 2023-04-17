@@ -54,12 +54,20 @@ SRC     =	concat_params.c	\
 		my_get_first_char.c	\
 		my_clean_string.c
 
-OBJ	=	$(SRC:.c=.o)
+BUILD_DIR =	build/
 
-BUIL_DIR =	build/
+DEBUG ?= 0
+ifeq ($(DEBUG), 1)
+	CFLAGS += -g
+endif
 
-.c.o:
-	@ gcc -c $< -o $@ $(CFLAGS) -g
+
+$(BUILD_DIR)%.o: %.c
+	@mkdir -p $(@D)
+	#@echo "  CC       $<      $@"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+OBJ = $(SRC:%.c=$(BUILD_DIR)%.o)
 
 BLUE = \033[1;34m
 NC = \033[0m
@@ -73,12 +81,10 @@ $(NAME):	$(OBJ)
 	mv $(NAME) ../
 	mkdir -p ../../include
 	cp my.h ../../include
-	mkdir -p $(BUIL_DIR)
-	mv $(OBJ) build/
 	@ echo "$(BLUE)Compilation of $(NAME) done$(NC)"
 
 clean:
-	rm -rf $(BUIL_DIR)
+	rm -rf $(BUILD_DIR)
 
 fclean: clean
 	rm -f ../$(NAME)

@@ -14,10 +14,12 @@ int my_strlen(char const *str);
 char *my_strcat(char *dest, char const *src)
 {
     int i = my_strlen(dest);
-    char *temps = malloc(sizeof(char) * ((i + my_strlen(src)) + 1));
+    char *temps = my_calloc(sizeof(char) * ((i + my_strlen(src)) + 1));
 
-    if (dest == NULL || src == NULL)
+    if (dest == NULL || src == NULL) {
+        free(temps);
         return my_strdup((dest != NULL) ? dest : src);
+    }
     for (int x = 0; x <= (i + my_strlen(src)); x++)
         temps[x] = '\0';
     temps = my_strcpy(temps, dest);
