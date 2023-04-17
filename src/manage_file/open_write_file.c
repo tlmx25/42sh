@@ -6,16 +6,18 @@
 */
 
 #include <unistd.h>
-#include <stdio.h>
+#include <fcntl.h>
 #include "mysh.h"
 
-void open_write_list(var_list *list, char const *filepath)
+void open_write_list(var_list *list, char const *filepath, int fd_stdout)
 {
-    FILE *file = fopen(filepath, "w+");
+    int fd = open(filepath, FLAG_ERASE);
 
-    if (file == NULL)
+    if (fd == -1)
         return;
+    dup2(fd, STDOUT_FILENO);
     for (var_node *node = list->head; node != NULL; node = node->next) {
-        fprintf(file, "%s=%s", node->name, node->var);
+        my_printf("%s=%s\n", node->name, node->var);
     }
+    dup2(fd_stdout, STDOUT_FILENO);
 }

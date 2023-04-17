@@ -84,7 +84,7 @@ char *get_name(char const *str);
 int is_built_in(char *command);
 char *get_left_redirection(var_s *variable, char *input);
 var_s *init_sh(char const **env);
-void open_write_list(var_list *list, char const *filepath);
+void open_write_list(var_list *list, char const *filepath, int fd_stdout);
 var_list *init_list_variable(char const *filepath);
 void free_var(var_s *var);
 void print_local_variable(UNU char const **arg, var_s *var);

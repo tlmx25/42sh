@@ -14,8 +14,9 @@ static int init_list(var_s *var, char const **env)
         return 84;
     ENV_VAR = array_to_linkedlist(env);
     LOCAL_VAR = init_list_variable(LOCAL_VAR_FILE);
-    if (ENV_VAR == NULL || LOCAL_VAR == NULL)
+    if (ENV_VAR == NULL || LOCAL_VAR == NULL) {
         return 84;
+    }
     verify_env(var);
     if (ENV_VAR->head == NULL)
         return 84;
@@ -28,6 +29,7 @@ var_s *init_sh(char const **env)
 
     if (init_list(var, env) == 84) {
         free(var);
+        my_printf("ici\n");
         return NULL;
     }
     var->fd_redirection_out = 1;

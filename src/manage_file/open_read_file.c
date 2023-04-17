@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include "my.h"
 
 int get_nb_line_file(char const *filepath)
 {
@@ -50,7 +51,7 @@ char **open_read_content_file(int nb_line, char const *filepath)
         return NULL;
     for (; i < (size_t)nb_line && check_return != -1; i++) {
         content_file[i] = NULL;
-        check_return = getline(&content_file[i], &len, file);
+        check_return = (int)getline(&content_file[i], &len, file);
         if (check_return == -1)
             continue;
         content_file[i][check_return - 1] = '\0';
