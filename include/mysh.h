@@ -96,5 +96,6 @@ void set_local_var(const char **info, var_s *var);
 void unset_local_var(char const **info, var_s *var);
 void unset_alias(char const **info, var_s *var);
 void add_alias(char const **info, var_s *var);
-char * check_alias(char *command, var_s *var);
+char *check_alias(char *command, var_s *var);
+int check_variable(char **all_command, var_s *var);
 #endif
