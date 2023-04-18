@@ -25,3 +25,4 @@ tester_out.txt
 42sh
 .local_var
 .alias
+my_tester.sh
