@@ -58,6 +58,11 @@ OBJ = $(SRC:%.c=$(BUILD_DIR)%.o)
 
 CFLAGS = -I include/ -Wextra -Wall
 
+DEBUG ?= 0
+ifeq ($(DEBUG), 1)
+	CFLAGS += -g
+endif
+
 NAME = libprint.a
 
 all: $(NAME)

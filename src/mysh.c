@@ -36,6 +36,7 @@ void get_command(var_s *var, char **input)
     for (size_t i = 0; i < ARRAY_LENGTH(command_list); i++) {
         if (my_strcmp(command_list[i].command, input[0]) == 0) {
             command_list[i].fct(AC input, var);
+            free_tab(input);
             return;
         }
     }
@@ -51,8 +52,10 @@ void bash_loop(var_s *var)
     while (1) {
         if (isatty(STDIN_FILENO))
             write(1,"$> ", 3);
-        if (getline(&input, &len, stdin) == EOF)
+        if (getline(&input, &len, stdin) == EOF) {
+            free(input);
             exit_function(NULL, var);
+        }
         input[my_strlen(input) - 1] = '\0';
         if (my_get_first_char(input, " \t") != '\0')
             separate_command_comma(var, input);

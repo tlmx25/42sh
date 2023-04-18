@@ -50,16 +50,19 @@ int which_flags(va_list args, char c, params param_struct, char *flag)
 
     if (param_struct.error == 84) {
         count = my_put_error(param_struct, flag);
+        free(flag);
         return (count);
     }
     for (int i = 0; i < (int)ARRAY_LENGTH(detect_list); i++) {
         if (detect_list[i].c == 'n' && c == 'n') {
             detect_list[i].fct(&count, args);
+            free(flag);
             return 0;
         }
         if (detect_list[i].c == c)
             detect_list[i].fct(args, param_struct, &count);
     }
+    free(flag);
     return count;
 }
 

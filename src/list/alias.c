@@ -51,6 +51,6 @@ char *check_alias(char *command, var_s *var)
     free(command);
     command = my_array_to_str_separator( AC tmp, " ");
     free_tab(tmp);
-    return command;
+    return check_alias(command, var);
 
 }
