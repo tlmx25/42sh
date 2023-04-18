@@ -22,6 +22,7 @@
     #define INV_NULL_CMD "Invalid null command.\n"
     #define VAR_CTN_AN "Variable name must contain alphanumeric characters.\n"
     #define VAR_STR_LET "Variable name must begin with a letter.\n"
+    #define UDF_VAR ": Undefined variable.\n"
     #define IS_RDRECT(X) (X == '<' || X == '>') ? 1 : 0
 
 typedef struct signal_error {

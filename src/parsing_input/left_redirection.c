@@ -23,15 +23,14 @@ static void double_left_redirect(char **cut_left_redirect, int fd[2])
     name = my_strcat(name, "\n");
     write(1, "? ", 2);
     while ((len_line = (int)getline(&line, &len, stdin)) != -1) {
-        if (my_strcmp(name, line) == 0) {
-            free(line);
+        if (my_strcmp(name, line) == 0)
             break;
-        }
         write(fd[1], line, len_line);
         free(line);
         line = NULL;
         write(1, "? ", 2);
     }
+    free(line);
     free(name);
 }
 

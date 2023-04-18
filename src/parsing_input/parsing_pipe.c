@@ -67,6 +67,8 @@ void parsing_pipe(var_s *variable, char **input)
 {
     int fd[2];
 
+    if (check_variable(input, variable))
+        return;
     if (pipe(fd) == -1)
         return;
     for (int i = 0; input[i]; i++) {
