@@ -103,7 +103,8 @@ tests_clean:
 
 my_test: $(OBJ)
 	@rm my_test
-	$(CC) $(filter-out build/main.o, $(OBJ)) test.c -o my_test $(LDFLAGS) -lncurses
+	$(CC) $(filter-out build/main.o, $(OBJ)) test.c -o my_test $(LDFLAGS)
+	-lncurses
 	@ echo "$(GREEN)test created$(NC)"
 
 

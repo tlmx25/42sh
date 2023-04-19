@@ -16,7 +16,10 @@ char *my_strndup(char const *src, size_t n)
 
     if (dest == NULL)
         return NULL;
-
+    if (n == 0) {
+        dest[0] = '\0';
+        return dest;
+    }
     for (i = 0; src[i] != 0 && i < n; i++)
         dest[i] = src[i];
 
