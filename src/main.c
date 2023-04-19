@@ -9,7 +9,7 @@
 
 int main(int ac, char **av, char **env)
 {
-    if (ac != 1)
+    if (ac != 1 && my_strcmp(av[1], "-i") != 0)
         return 84;
     return mysh(ac, av, env);
 }

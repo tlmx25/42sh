@@ -28,6 +28,10 @@
     #include "my.h"
     #include "myprintf.h"
 
+enum MODE {
+    CLASSIC,
+    EDITING,
+};
 typedef struct var_node {
     char *name;
     char *var;
@@ -52,6 +56,7 @@ typedef struct var {
     int dup_stdout;
     int dup_stdin;
     int *pid_list;
+    int mode;
 }var_s;
 
 typedef struct commands {
@@ -98,4 +103,6 @@ void unset_alias(char const **info, var_s *var);
 void add_alias(char const **info, var_s *var);
 char *check_alias(char *command, var_s *var);
 int check_variable(char **all_command, var_s *var);
+int my_getline(char **input);
+void manage_input(char **input, var_s *var);
 #endif

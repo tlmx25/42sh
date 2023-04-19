@@ -41,12 +41,15 @@ char *check_alias(char *command, var_s *var)
     var_node *node;
     char **tmp = my_str_to_word_array(command, " \t");
 
-    if (tmp == NULL)
+    if (tmp == NULL) {
+        free_tab(tmp);
         return command;
+    }
     if (!(node = find_node(tmp[0], ALIAS))) {
         free_tab(tmp);
         return command;
     }
+    free(tmp[0]);
     tmp[0] = my_strdup(node->var);
     free(command);
     command = my_array_to_str_separator( AC tmp, " ");

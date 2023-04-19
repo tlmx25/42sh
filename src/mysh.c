@@ -47,16 +47,9 @@ void get_command(var_s *var, char **input)
 void bash_loop(var_s *var)
 {
     char *input = NULL;
-    size_t len = 0;
 
     while (1) {
-        if (isatty(STDIN_FILENO))
-            write(1,"$> ", 3);
-        if (getline(&input, &len, stdin) == EOF) {
-            free(input);
-            exit_function(NULL, var);
-        }
-        input[my_strlen(input) - 1] = '\0';
+        manage_input(&input, var);
         if (my_get_first_char(input, " \t") != '\0')
             separate_command_comma(var, input);
         free(input);
@@ -72,6 +65,7 @@ int mysh(UNU int ac, UNU char **av, char **env)
     variable = init_sh((char const **)env);
     if (variable == NULL)
         return 84;
+    variable->mode = (ac != 1) ? CLASSIC : EDITING;
     bash_loop(variable);
     return 0;
 }
