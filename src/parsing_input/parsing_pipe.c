@@ -37,6 +37,7 @@ void manager_parent_part(int fd[2], var_s *variable, int pid, int last_pipe)
 void manager_last_part_built_in(var_s *variable, char *input, int fd[2])
 {
     char **command = my_str_to_word_array(input, " \t");
+
     if (command == NULL)
         return;
     get_command(variable, command);

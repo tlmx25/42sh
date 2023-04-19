@@ -16,7 +16,10 @@ char *my_strndup(char const *src, size_t n)
 
     if (dest == NULL)
         return NULL;
-
+    if (n == 0) {
+        dest[0] = '\0';
+        return dest;
+    }
     for (i = 0; src[i] != 0 && i < n; i++)
         dest[i] = src[i];
 
@@ -30,8 +33,13 @@ char *my_strdup(char const *src)
     int count = my_strlen(src);
     char *dest = malloc(sizeof(char) * (count + 1));
 
-    if (dest == NULL || count == 0)
+    if (dest == NULL || src == NULL)
         return NULL;
+
+    if (count == 0) {
+        dest[0] = '\0';
+        return dest;
+    }
 
     for (size_t i = 0; src[i] != 0; i++)
         dest[i] = src[i];

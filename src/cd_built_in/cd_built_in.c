@@ -43,9 +43,34 @@ void cd_home_argument(char const **arg, var_list *list)
     }
 }
 
+static void manage_path(var_s *var, char *old_path)
+{
+    var_node *node;
+
+    node = find_node("OLDPWD", ENV_VAR);
+    free(node->var);
+    node->var = old_path;
+
+    node = find_node("PWD", ENV_VAR);
+    free(node->var);
+    node->var = getcwd(NULL, 0);
+}
+
+static int manage_chdir(char const **arg, var_s *var, char *old_path)
+{
+    if (chdir(verify_path(arg[1], ENV_VAR)) == -1) {
+        STATUS = 1;
+        my_printf("%z%z%z%z",((arg[1][0] == '-') ? "" : arg[1]),
+        ": ", strerror(errno), ".\n");
+        free(old_path);
+        return 1;
+    }
+    return 0;
+}
+
 void cd_built_in(char const **arg, var_s *var)
 {
-    char *old_path = my_strcat("setenv=OLDPWD=", getcwd(NULL, 0));
+    char *old_path = getcwd(NULL, 0);
     int nb_arg = my_arrsize(arg);
     if (nb_arg > 2) {
         my_printf("%z", CD_MANY_ARG);
@@ -55,13 +80,8 @@ void cd_built_in(char const **arg, var_s *var)
     if (nb_arg == 1 || !my_strcmp(arg[1], "~")) {
         cd_home_argument(arg, ENV_VAR);
     } else {
-        if (chdir(verify_path(arg[1], ENV_VAR)) == -1) {
-            STATUS = 1;
-            my_printf("%z%z%z%z",((arg[1][0] == '-') ? "" : arg[1]),
-            ": ", strerror(errno), ".\n");
+        if (manage_chdir(arg, var, old_path))
             return;
-        }
     }
-    set_env(AC my_str_to_word_array(old_path,"="), var);
-    find_node("PWD", ENV_VAR)->var = getcwd(NULL, 0);
+    manage_path(var, old_path);
 }

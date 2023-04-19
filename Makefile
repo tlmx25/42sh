@@ -18,6 +18,7 @@ VPATH += src/list
 VPATH += src/init
 VPATH += src/destroy
 VPATH += src/manage_file
+VPATH += src/input
 
 SRC += main.c
 SRC += mysh.c
@@ -41,10 +42,13 @@ SRC += open_write_file.c
 SRC += free_var.c
 SRC += alias.c
 SRC += manage_local_variable.c
+SRC += my_getline.c
+SRC += manage_string.c
+SRC += manage_input.c
 
 CFLAGS = -I include/ -Wall -Wextra
 
-LDFLAGS = -L lib/ -lmy -lprint
+LDFLAGS = -L lib/ -lmy -lprint -lncurses
 
 BUILD_DIR = build/
 
