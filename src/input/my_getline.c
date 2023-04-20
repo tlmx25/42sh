@@ -7,8 +7,8 @@
 
 #include <termios.h>
 #include "mysh.h"
-char *my_str_cat_char(char *str, char c, int cursor);
 char *my_str_del_char(char *str, int cursor);
+int clean_line(int len, int cursor);
 
 static struct termios set_term(void)
 {
@@ -41,21 +41,20 @@ static void handle_arrow_keys(UNU char** input, int* len, int* cursor)
 
 void set_char(int *len, int *cursor, char **input, int c)
 {
-    for (size_t i = 0; (int)i != (*len - *cursor); i++)
-        my_printf("\033[C");
-    for (size_t i = 0; (int)i < *len && *len != 0; i++)
-        my_printf("\b \b");
+    clean_line(*len, *cursor);
     my_printf("%s", *input);
     *len = my_strlen(*input);
     if (c != 127)
         (*cursor)++;
     else if (*cursor > 0)
         (*cursor)--;
+    if (c == '\t')
+        *cursor = *len;
     for (size_t i = 0; (int)i != *len - *cursor; i++)
         my_printf("\033[D");
 }
 
-static int get_intput(char **input)
+static int get_input(char **input, var_s *var)
 {
     int len = my_strlen(*input);
     int c = 0;
@@ -64,14 +63,14 @@ static int get_intput(char **input)
     while (1) {
         c = getchar();
         if (c == 4 || c == 13 || c == EOF)
-            return -1;
+            return clean_line(len, cursor);
         if (c == 27) {
             handle_arrow_keys(input, &len, &cursor);
             continue;
         }
-        if ((c < 32 || c > 127) && c != '\n')
+        if ((c < 32 || c > 127) && !is_separator("\t\n", (char)c))
             continue;
-        *input = my_str_cat_char(*input, (char)c, cursor);
+        handle_autocompletion(c, input, var, &cursor);
         set_char(&len, &cursor,  input, c);
         if (c == '\n')
             break;
@@ -79,7 +78,7 @@ static int get_intput(char **input)
     return len;
 }
 
-int my_getline(char **input)
+int my_getline(char **input, var_s *var)
 {
     struct termios old_termios = set_term();
     int value;
@@ -89,7 +88,7 @@ int my_getline(char **input)
     if (*input == NULL) {
         return -1;
     }
-    value = get_intput(input);
+    value = get_input(input, var);
     tcsetattr(STDIN_FILENO, TCSANOW, &old_termios);
     return value;
 }
