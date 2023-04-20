@@ -30,6 +30,8 @@ void handle_autocompletion(int c, char **input, var_s *var, int *cursor)
         *input = my_str_cat_char(*input, (char)c, *cursor);
         return;
     }
+    if (var == NULL)
+        return;
     get_world(input, var);
 
 }
