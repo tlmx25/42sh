@@ -32,7 +32,7 @@ void unset_alias(char const **info, var_s *var)
         return;
     }
     for (size_t i = 1; info[i]; i++)
-        delete_env_var(info[i], LOCAL_VAR);
+        delete_with_globbing(info[i], LOCAL_VAR);
     open_write_list(LOCAL_VAR, LOCAL_VAR_FILE, var->dup_stdout);
 }
 

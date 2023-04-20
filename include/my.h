@@ -68,5 +68,7 @@
     char my_get_first_char(char const *str, char const *skip_char);
     size_t my_strlen_skip_char(char const *str, char const *skip_char);
     char *my_clean_string(char *str, char const *delete_char, int free_str);
+    size_t my_count_char(char const *str, char c);
     char *my_array_to_str_separator(char const **array, char const *separator);
+    char my_get_last_char(char const *str, char const *skip_char);
 #endif /* _MY_H_ */

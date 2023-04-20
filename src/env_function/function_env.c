@@ -64,5 +64,7 @@ void unset_env(char const **arg, var_s *var)
         STATUS = 1;
         return;
     }
-    delete_env_var(arg[1], ENV_VAR);
+    for (size_t i = 1; arg[i]; i++) {
+        delete_with_globbing(arg[i], ENV_VAR);
+    }
 }

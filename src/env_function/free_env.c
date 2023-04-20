@@ -7,6 +7,21 @@
 
 #include "mysh.h"
 
+void clean_list(var_list *list)
+{
+    var_node *next;
+
+    if (list == NULL)
+        return;
+    for (var_node *node = list->head; node != NULL; node = next) {
+        next = node->next;
+        free_node(&node);
+    }
+    list->head = NULL;
+    list->tail = NULL;
+    list->size = 0;
+}
+
 void free_list(var_list *list)
 {
     var_node *next;

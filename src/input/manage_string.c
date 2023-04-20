@@ -51,7 +51,7 @@ static char *my_str_cat_cpy(char *str, int cursor, int len, int c)
     return new_str;
 }
 
-char *my_str_cat_char(char *str, char c, int cursor)
+char *my_str_cat_char(char *str, int c, int cursor)
 {
     int len = my_strlen(str);
 
