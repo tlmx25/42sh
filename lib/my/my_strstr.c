@@ -4,7 +4,9 @@
 ** File description:
 ** find a str in other str , return pointers if find a str , else 0
 */
-#include <stdio.h>
+
+#include <stddef.h>
+#include "my.h"
 
 int boucle2(char *str, char const *to_find, int i)
 {
@@ -29,16 +31,14 @@ int boucle2(char *str, char const *to_find, int i)
 
 char *my_strstr(char *str, char const *to_find)
 {
-    int j = 0;
-    int h;
+    int len_str = my_strlen(str);
+    int len_find = my_strlen(to_find);
 
-    if (to_find[0] == '\0')
-        return (&str[0]);
-    for (int i = 0; str[i] != '\0'; i++){
-        if (str[i] == to_find[j])
-            h = boucle2(str, to_find, i);
-        if (h == -1)
-            return (&str[i]);
+    if (len_find == 0 || len_str == 0)
+        return 0;
+    for (int i = 0; i < len_str; i++) {
+        if (my_strncmp(&str[i], to_find , len_find) == 0)
+            return &str[i];
     }
-    return "NULL";
+    return NULL;
 }

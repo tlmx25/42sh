@@ -23,8 +23,9 @@ static const command_l command_list[] = {
 int is_built_in(const char *command)
 {
     for (size_t i = 0; i < ARRAY_LENGTH(command_list); i++) {
-        if (my_str_in_str(command, command_list[i].command))
+        if (my_str_in_str(command, command_list[i].command)) {
             return 1;
+        }
     }
     return 0;
 }
