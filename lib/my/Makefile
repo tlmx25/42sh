@@ -52,11 +52,12 @@ SRC     =	concat_params.c	\
 		my_calloc.c	\
 		my_array_to_str.c	\
 		my_get_first_char.c	\
-		my_clean_string.c
+		my_clean_string.c	\
+		my_count_char.c
 
 BUILD_DIR =	build/
 
-DEBUG ?= 0
+DEBUG ?= 1
 ifeq ($(DEBUG), 1)
 	CFLAGS += -g
 endif

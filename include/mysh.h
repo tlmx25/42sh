@@ -20,6 +20,7 @@
     #define LOCAL_VAR var->local_var
     #define ENV_VAR var->env_var
     #define ALIAS var->alias
+    #define DICO var->dico
     #define HAVE_NAME_ARG(X) (X[1] == '>') ? &X[1] : X
     #include <unistd.h>
     #include <string.h>
@@ -51,6 +52,7 @@ typedef struct var {
     var_list *env_var;
     var_list *local_var;
     var_list *alias;
+    var_list *dico;
     int fd_redirection_out;
     int fd_redirection_in;
     int dup_stdout;
@@ -103,6 +105,10 @@ void unset_alias(char const **info, var_s *var);
 void add_alias(char const **info, var_s *var);
 char *check_alias(char *command, var_s *var);
 int check_variable(char **all_command, var_s *var);
-int my_getline(char **input);
+int my_getline(char **input, var_s *var);
 void manage_input(char **input, var_s *var);
+var_list *init_dico(char const *filepath);
+void handle_autocompletion(int c, char **input, var_s *var, int *cursor);
+void clean_list(var_list *list);
+void delete_with_globbing(char const *name, var_list *list);
 #endif

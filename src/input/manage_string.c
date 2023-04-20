@@ -37,21 +37,21 @@ static char *my_str_cat_cpy(char *str, int cursor, int len, int c)
     if (new_str == NULL)
         return str;
     for (int i = 0; i < len; j++) {
-        if (j == cursor) {
+        if (j == cursor && c != '\n') {
             new_str[j] = (char)c;
             continue;
         }
         new_str[j] = str[i];
         i++;
     }
-    if (len == cursor)
+    if (len == cursor || c == '\n')
         new_str[len] = (char)c;
     new_str[len + 1] = '\0';
     free(str);
     return new_str;
 }
 
-char *my_str_cat_char(char *str, char c, int cursor)
+char *my_str_cat_char(char *str, int c, int cursor)
 {
     int len = my_strlen(str);
 
