@@ -48,11 +48,13 @@ $ ls
 
 ### Redirection d'entrée/sortie
 
-Pour rediriger l'entrée ou la sortie d'une commande vers un fichier, utilisez les symboles `<` et `>` respectivement :
+Pour rediriger l'entrée ou la sortie d'une commande vers un fichier, utilisez les symboles `<` `<<` et `>` `>>` respectivement :
 
 ```shell
 $ cat < fichier.txt
 $ ls > fichiers.txt
+$ cat << oui
+$ ls >> fichiers.txt
 ```
 
 ### Pipes
