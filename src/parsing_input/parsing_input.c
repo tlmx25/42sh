@@ -88,21 +88,21 @@ static int verify_invalid_null_cmd(char const *input)
     return 0;
 }
 
-void separate_command_comma(var_s *variable, char *input)
+void separate_command_comma(var_s *var, char *input)
 {
     char **array_comma;
 
     if (verify_name_redirect(input) || verify_invalid_null_cmd(input) ||
     verify_ambiguous_redirect(input)) {
-        variable->env_var->status = 1;
+        STATUS = 1;
         return;
     }
     array_comma = my_str_to_word_array(input, ";");
     if (array_comma == NULL)
         return;
     for (int i = 0; array_comma[i]; i++) {
-        variable->env_var->status = 0;
-        verify_if_redirection(variable, array_comma[i]);
+        STATUS = 0;
+        verify_if_redirection(var, array_comma[i]);
     }
     free(array_comma);
 }

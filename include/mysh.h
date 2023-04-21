@@ -86,7 +86,7 @@ void unset_env(char const **arg, var_s *var);
 int my_str_isalphanum_env(char const *str);
 int my_str_isalpha_env(char const *str, char const *command);
 void cd_built_in(char const **arg, var_s *var);
-void separate_command_comma(var_s *variable, char *input);
+void separate_command_comma(var_s *var, char *input);
 void get_command(var_s *var, char **input);
 void verify_if_redirection(var_s *variable, char *input);
 void parsing_pipe(var_s *variable, char **input);
