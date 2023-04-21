@@ -46,14 +46,20 @@ void cd_home_argument(char const **arg, var_list *list)
 static void manage_path(var_s *var, char *old_path)
 {
     var_node *node;
+    char **tmp;
+    char *path_tmp;
 
     node = find_node("OLDPWD", ENV_VAR);
     free(node->var);
     node->var = old_path;
-
     node = find_node("PWD", ENV_VAR);
     free(node->var);
     node->var = getcwd(NULL, 0);
+    path_tmp = my_strcat("set cwd=", node->var);
+    tmp = my_str_to_word_array(path_tmp, " ");
+    set_local_var(AC tmp, var);
+    free_tab(tmp);
+    free(path_tmp);
 }
 
 static int manage_chdir(char const **arg, var_s *var, char *old_path)

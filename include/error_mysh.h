@@ -23,6 +23,8 @@
     #define VAR_CTN_AN "Variable name must contain alphanumeric characters.\n"
     #define VAR_STR_LET "Variable name must begin with a letter.\n"
     #define UDF_VAR ": Undefined variable.\n"
+    #define CMD_NOT_FOUND ": Command not found.\n"
+    #define SH_BUILT_CMD ": shell built-in command.\n"
     #define IS_RDRECT(X) (X == '<' || X == '>') ? 1 : 0
 
 typedef struct signal_error {

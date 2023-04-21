@@ -12,6 +12,7 @@
     #define SC (char const *)
     #define ABS(X) (X < 0) ? (X * (-1)) : X
     #define IS_NULL_N(X) (X == NULL) ? "/bin:/usr/bin:/usr" : X->var
+    #define IS_NN(X) (X == NULL) ? NULL : X->var
     #define IS_NULL(X) (X == NULL) ? NULL : X
     #define FLAG_APPEND O_CREAT | O_WRONLY | O_APPEND
     #define FLAG_ERASE O_CREAT | O_WRONLY | O_TRUNC
@@ -78,7 +79,7 @@ void exit_function(char const **arg, var_s *var);
 char **linkedlist_to_array(var_list *list);
 var_node *find_node(char const *name, var_list *list);
 void set_env(char const **arg, var_s *var);
-void exec_sys_function(var_s *variable, char **input);
+void exec_sys_function(var_s *var, char **input);
 void verify_env(var_s *var);
 void free_list(var_list *list);
 void unset_env(char const **arg, var_s *var);
@@ -111,4 +112,6 @@ var_list *init_dico(char const *filepath);
 void handle_autocompletion(int c, char **input, var_s *var, int *cursor);
 void clean_list(var_list *list);
 void delete_with_globbing(char const *name, var_list *list);
+void check_local_var(var_s *var);
+void my_which_command(char const **info, var_s *var);
 #endif

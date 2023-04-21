@@ -19,6 +19,7 @@ VPATH += src/init
 VPATH += src/destroy
 VPATH += src/manage_file
 VPATH += src/input
+VPATH += src/built_in
 
 SRC += main.c
 SRC += mysh.c
@@ -48,6 +49,8 @@ SRC += create_dico.c
 SRC += manage_input.c
 SRC += autocompletion.c
 SRC += delete_with_globbing.c
+SRC += check_local_var.c
+SRC += which_where.c
 
 CFLAGS = -I include/ -Wall -Wextra
 

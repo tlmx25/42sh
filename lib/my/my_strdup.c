@@ -33,9 +33,10 @@ char *my_strdup(char const *src)
     int count = my_strlen(src);
     char *dest = malloc(sizeof(char) * (count + 1));
 
-    if (dest == NULL || src == NULL)
+    if (dest == NULL || src == NULL) {
+        free(dest);
         return NULL;
-
+    }
     if (count == 0) {
         dest[0] = '\0';
         return dest;

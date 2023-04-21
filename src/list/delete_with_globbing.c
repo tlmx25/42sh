@@ -31,15 +31,17 @@ void delete_with_globbing(char const *name, var_list *list)
     int mode = 0;
     var_node *next = NULL;
 
+    if (my_strcmp("*", name) == 0) {
+        clean_list(list);
+        return;
+    }
     if (my_get_first_char(name, " \t") == '*')
         mode = 1;
     if (my_get_last_char(name, " \t") == '*')
         mode = (mode == 1) ? 3 : 2;
-    if (mode == 0) {
+    if (mode == 0)
         delete_env_var(name, list);
-        return;
-    }
-    for (var_node *node = list->head; node != NULL; node = next) {
+    for (var_node *node = list->head; node != NULL && mode; node = next) {
         next = node->next;
         if (check_name(name, mode, node->name)) {
             delete_env_var(node->name, list);
