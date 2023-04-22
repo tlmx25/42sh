@@ -30,11 +30,12 @@ static char *get_valid_pass_which(char const *command, var_list *list)
     return NULL;
 }
 
-static void get_valid_pass_where(char const *command, var_list *list)
+static int get_valid_pass_where(char const *command, var_list *list)
 {
     char **path = NULL;
     char *path_temp;
     char *path_with_back = NULL;
+    int status = 0;
 
     path = my_str_to_word_array(IS_NULL_N(find_node("PATH", list)), ":");
     for (size_t i = 0; path[i]; i++) {
@@ -42,11 +43,13 @@ static void get_valid_pass_where(char const *command, var_list *list)
         path_temp = my_strcat(path_with_back, command);
         if (!access(path_temp, F_OK)) {
             my_printf("%s\n", path_temp);
+            status = 1;
         }
         free(path_with_back);
         free(path_temp);
     }
     free_tab(path);
+    return status;
 }
 
 void my_which_command(char const **info, var_s *var)
@@ -73,13 +76,19 @@ void my_which_command(char const **info, var_s *var)
 
 void my_where_command(char const **info, var_s *var)
 {
-    for (size_t i = 1; info[i]; i++) {
+    int status = 0;
+
+    for (size_t i = 1; info[i]; i++, status = 0) {
         if (my_str_in_str(info[i], "/")) {
             my_printf("%z", "where: / in command makes no sense\n");
+            STATUS = 1;
             continue;
         }
-        if (is_built_in(info[i]))
+        if (is_built_in(info[i])) {
+            status = 1;
             my_printf("%s%s", info[i], SH_IS_BUILT_CMD);
-        get_valid_pass_where(info[i], ENV_VAR);
+        }
+        if (!get_valid_pass_where(info[i], ENV_VAR) && !status)
+            STATUS = 1;
     }
 }
