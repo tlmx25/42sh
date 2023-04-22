@@ -74,6 +74,10 @@ void my_which_command(char const **info, var_s *var)
 void my_where_command(char const **info, var_s *var)
 {
     for (size_t i = 1; info[i]; i++) {
+        if (my_str_in_str(info[i], "/")) {
+            my_printf("%z", "where: / in command makes no sense\n");
+            continue;
+        }
         if (is_built_in(info[i]))
             my_printf("%s%s", info[i], SH_IS_BUILT_CMD);
         get_valid_pass_where(info[i], ENV_VAR);
