@@ -19,6 +19,7 @@ static const command_l command_list[] = {
         {"unalias",        unset_alias},
         {"alias",        add_alias},
         {"which",        my_which_command},
+        {"where",        my_where_command},
 };
 
 int is_built_in(const char *command)
