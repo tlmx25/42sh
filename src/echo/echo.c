@@ -9,4 +9,8 @@
 
 void my_echo_command(char const **info, var_s *var)
 {
+    if (!info[1]) {
+        my_printf("\n");
+        return;
+    }
 }
