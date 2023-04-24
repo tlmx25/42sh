@@ -67,7 +67,10 @@ typedef struct commands {
     void (*fct)(char const **, var_s *);
 }command_l;
 
-
+typedef struct spe_char_s {
+    char spe_char;
+    void (*fct)(void);
+}spe_char_t;
 
 int mysh(int ac, char **av, char **env);
 void add_var(char const **info, var_list *list);
@@ -116,4 +119,14 @@ void check_local_var(var_s *var);
 void my_which_command(char const **info, var_s *var);
 void my_where_command(char const **info, var_s *var);
 void my_echo_command(char const **info, var_s *var);
+void backslash_double(void);
+void backslash_a(void);
+void backslash_b(void);
+void backslash_c(void);
+void backslash_e(void);
+void backslash_f(void);
+void backslash_n(void);
+void backslash_t(void);
+void backslash_v(void);
+void backslash_r(void);
 #endif

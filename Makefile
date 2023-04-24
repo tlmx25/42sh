@@ -51,6 +51,8 @@ SRC += autocompletion.c
 SRC += delete_with_globbing.c
 SRC += check_local_var.c
 SRC += echo/echo.c
+SRC += echo/spe_char/fiveth.c
+SRC += echo/spe_char/tenth.c
 SRC += which_where.c
 
 CFLAGS = -I include/ -Wall -Wextra
