@@ -115,4 +115,5 @@ void delete_with_globbing(char const *name, var_list *list);
 void check_local_var(var_s *var);
 void my_which_command(char const **info, var_s *var);
 void my_where_command(char const **info, var_s *var);
+void my_echo_command(char const **info, var_s *var);
 #endif

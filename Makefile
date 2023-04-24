@@ -50,6 +50,7 @@ SRC += manage_input.c
 SRC += autocompletion.c
 SRC += delete_with_globbing.c
 SRC += check_local_var.c
+SRC += echo/echo.c
 SRC += which_where.c
 
 CFLAGS = -I include/ -Wall -Wextra
