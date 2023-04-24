@@ -13,4 +13,10 @@ void my_echo_command(char const **info, var_s *var)
         my_printf("\n");
         return;
     }
+    for (int i = 1; info[i]; i++) {
+        if (!info[i + 1])
+            my_printf("%s\n", info[i]);
+        else
+            my_printf("%s ", info[i]);
+    }
 }
