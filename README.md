@@ -12,7 +12,7 @@
 
 ### Instructions
 
-1. Clonez le dépôt : `git clone https://github.com/EpitechPromo2027/B-PSU-200-REN-2-1-42sh-arthur.doriel.git
+1. Clonez le dépôt : `git clone https://github.com/EpitechPromo2027/B-PSU-200-REN-2-1-42sh-arthur.doriel.git`
 2. Allez dans le répertoire du projet : `cd 42sh`
 3. Compilez le programme : `make`
 4. Lancez le shell : `./42sh`
