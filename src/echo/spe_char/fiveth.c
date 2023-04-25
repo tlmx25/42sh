@@ -22,11 +22,6 @@ void backslash_b(void)
     my_printf("\b");
 }
 
-void backslash_c(void)
-{
-    my_printf("\c");
-}
-
 void backslash_e(void)
 {
     my_printf("\e");
