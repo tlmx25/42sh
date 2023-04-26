@@ -44,7 +44,7 @@ static char *my_str_cat_cpy(char *str, int cursor, int len, int c)
         new_str[j] = str[i];
         i++;
     }
-    if (len == cursor || c == '\n')
+    if (len <= cursor || c == '\n')
         new_str[len] = (char)c;
     new_str[len + 1] = '\0';
     free(str);

@@ -22,8 +22,10 @@ void manage_input(char **input, var_s *var)
     int value;
     var_node *node = find_node("ignoreof", LOCAL_VAR);
 
-    if (isatty(STDIN_FILENO))
-        write(1,"$> ", 3);
+    if (isatty(STDIN_FILENO)) {
+        set_prompt(var);
+        my_printf("%s ", var->prompt);
+    }
     if (isatty(STDIN_FILENO) && var->mode == EDITING)
         value = my_getline(input, var);
     else

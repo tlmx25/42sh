@@ -11,6 +11,7 @@ int *add_pid(int *actual_list, int pid)
 {
     size_t size = 0;
     int *new_list;
+
     for (; actual_list[size] != -2; size++);
     new_list = malloc(sizeof(int) * (size + 2));
     if (new_list == NULL)

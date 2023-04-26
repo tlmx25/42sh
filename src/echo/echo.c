@@ -51,4 +51,5 @@ void my_echo_command(char const **info, UNU var_s *var)
         return;
     }
     print_echo(command);
+    free(command);
 }

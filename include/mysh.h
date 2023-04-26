@@ -22,6 +22,8 @@
     #define ENV_VAR var->env_var
     #define ALIAS var->alias
     #define DICO var->dico
+    #define CHOICE_PROMPT (my_strcmp(var->prompt, "$> ") == 0) ?\
+    var->prompt : my_strdup("$> ")
     #define HAVE_NAME_ARG(X) (X[1] == '>') ? &X[1] : X
     #include <unistd.h>
     #include <string.h>
@@ -59,6 +61,7 @@ typedef struct var {
     int dup_stdout;
     int dup_stdin;
     int *pid_list;
+    char *prompt;
     int mode;
 }var_s;
 
@@ -71,6 +74,11 @@ typedef struct spe_char_s {
     char spe_char;
     void (*fct)(void);
 }spe_char_t;
+
+typedef struct prompt {
+    char flag;
+    char *(*fct)(var_s *var);
+} prompt_t;
 
 int mysh(int ac, char **av, char **env);
 void add_var(char const **info, var_list *list);
@@ -118,6 +126,7 @@ void delete_with_globbing(char const *name, var_list *list);
 void check_local_var(var_s *var);
 void my_which_command(char const **info, var_s *var);
 void my_where_command(char const **info, var_s *var);
+char *my_str_cat_char(char *str, int c, int cursor);
 void my_echo_command(char const **info, var_s *var);
 void backslash_double(void);
 void backslash_a(void);
@@ -129,4 +138,6 @@ void backslash_n(void);
 void backslash_t(void);
 void backslash_v(void);
 void backslash_r(void);
+void set_status_variable(var_s *var);
+void set_prompt(var_s *var);
 #endif
