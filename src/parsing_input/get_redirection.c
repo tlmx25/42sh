@@ -32,23 +32,24 @@ static char *create_redirection(var_s *variable, char *input)
     return new_input;
 }
 
-static void managing_pipe(var_s *variable, char **pipe_input, int size)
+static void managing_pipe(var_s *var, char **pipe_input, int size)
 {
     int error = 0;
 
-    variable->pid_list = my_calloc(sizeof(int) * (size + 1));
-    if (variable->pid_list == NULL) {
+    var->pid_list = my_calloc(sizeof(int) * (size + 1));
+    if (var->pid_list == NULL) {
         free_tab(pipe_input);
         return;
     }
-    variable->pid_list[size] = -2;
-    parsing_pipe(variable, pipe_input);
-    for (int i = 0; variable->pid_list[i] != -2; i++) {
-        waitpid(variable->pid_list[i], &error, 0);
+    var->pid_list[size] = -2;
+    parsing_pipe(var, pipe_input);
+    for (int i = 0; var->pid_list[i] != -2; i++) {
+        waitpid(var->pid_list[i], &error, 0);
         if (WEXITSTATUS(error) != 0)
-            variable->env_var->status = WEXITSTATUS(error);
+            STATUS = WEXITSTATUS(error);
     }
-    free(variable->pid_list);
+    set_status_variable(var);
+    free(var->pid_list);
 }
 
 static void choice_execution_function(char *input, var_s *variable)

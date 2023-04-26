@@ -24,6 +24,8 @@ int my_str(va_list str, params param_struct, int *count)
     char const *s = va_arg(str, char *);
     int len = my_strlen(s);
 
+    if (len == 0)
+        return 0;
     if (param_struct.pres == -1)
         param_struct.pres = len;
     if (param_struct.pres > len )

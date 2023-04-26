@@ -129,4 +129,5 @@ void backslash_n(void);
 void backslash_t(void);
 void backslash_v(void);
 void backslash_r(void);
+void set_status_variable(var_s *var);
 #endif

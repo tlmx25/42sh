@@ -54,6 +54,7 @@ SRC += echo/echo.c
 SRC += echo/spe_char/fiveth.c
 SRC += echo/spe_char/tenth.c
 SRC += which_where.c
+SRC += set_status_variable.c
 
 CFLAGS = -I include/ -Wall -Wextra
 

@@ -10,6 +10,7 @@
 static const var_node default_variable[] = {
         {"term", "term=42sh-256color", NULL, NULL},
         {"ignoreof", "ignoreof=off", NULL, NULL},
+        {"?", "?=0", NULL, NULL},
 };
 
 static void set_cwd_variable(var_s *var)
