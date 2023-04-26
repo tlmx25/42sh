@@ -33,6 +33,7 @@ enum MODE {
     CLASSIC,
     EDITING,
 };
+
 typedef struct var_node {
     char *name;
     char *var;
@@ -111,4 +112,6 @@ var_list *init_dico(char const *filepath);
 void handle_autocompletion(int c, char **input, var_s *var, int *cursor);
 void clean_list(var_list *list);
 void delete_with_globbing(char const *name, var_list *list);
+int check_if_separators(char *input);
+void handle_separators(char *input);
 #endif

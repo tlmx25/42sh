@@ -48,6 +48,7 @@ SRC += create_dico.c
 SRC += manage_input.c
 SRC += autocompletion.c
 SRC += delete_with_globbing.c
+SRC += separators.c
 
 CFLAGS = -I include/ -Wall -Wextra
 

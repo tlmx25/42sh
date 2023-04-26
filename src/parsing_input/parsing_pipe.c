@@ -73,6 +73,15 @@ void parsing_pipe(var_s *variable, char **input)
     if (pipe(fd) == -1)
         return;
     for (int i = 0; input[i]; i++) {
+        if (check_if_separators(input[i]))
+            handle_separators(input[i]);
+        // vérifier d'abord si && ou || présent dans input
+        // si oui lancer fonctions associées
+        // virer && et || de l'input pour découper et donner à fonction suivante
+        // si la 1e commande = erreur
+        // prééxécuter et rediriger output vers un truc on s'en fou
+        // break si erreur
+        // printf("%s\n", input[i]);
         if (exec_command_pipe(input, fd, variable, i))
             break;
     }
