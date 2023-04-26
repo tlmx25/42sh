@@ -22,7 +22,8 @@
     #define ENV_VAR var->env_var
     #define ALIAS var->alias
     #define DICO var->dico
-    #define CHOICE_PROMPT (my_strcmp(var->prompt, "$> ") == 0) ? var->prompt : my_strdup("$> ")
+    #define CHOICE_PROMPT (my_strcmp(var->prompt, "$> ") == 0) ?\
+    var->prompt : my_strdup("$> ")
     #define HAVE_NAME_ARG(X) (X[1] == '>') ? &X[1] : X
     #include <unistd.h>
     #include <string.h>
