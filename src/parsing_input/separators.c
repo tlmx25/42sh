@@ -16,7 +16,8 @@ int check_if_separators(char *input)
     }
     return 0;
 }
+
 void handle_separators(char *input)
 {
-
+    printf("execute separators\n");
 }
