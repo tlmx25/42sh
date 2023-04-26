@@ -64,12 +64,21 @@ static void manage_path(var_s *var, char *old_path)
 
 static int manage_chdir(char const **arg, var_s *var, char *old_path)
 {
+    var_node *node = find_node("cwdcmd", ALIAS);
+    int *test;
+
     if (chdir(verify_path(arg[1], ENV_VAR)) == -1) {
         STATUS = 1;
         my_printf("%z%z%z%z",((arg[1][0] == '-') ? "" : arg[1]),
         ": ", strerror(errno), ".\n");
         free(old_path);
         return 1;
+    }
+    if (node != NULL) {
+        test = var->pid_list;
+        var->pid_list = NULL;
+        separate_command_comma(var, node->var);
+        var->pid_list = test;
     }
     return 0;
 }

@@ -43,13 +43,16 @@ static void managing_pipe(var_s *var, char **pipe_input, int size)
     }
     var->pid_list[size] = -2;
     parsing_pipe(var, pipe_input);
-    for (int i = 0; var->pid_list[i] != -2; i++) {
+    for (int i = 0; var->pid_list != NULL && var->pid_list[i] != -2; i++) {
         waitpid(var->pid_list[i], &error, 0);
         if (WEXITSTATUS(error) != 0)
             STATUS = WEXITSTATUS(error);
     }
     set_status_variable(var);
-    free(var->pid_list);
+    if (var->pid_list) {
+        free(var->pid_list);
+        var->pid_list = NULL;
+    }
 }
 
 static void choice_execution_function(char *input, var_s *variable)
