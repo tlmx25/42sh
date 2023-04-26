@@ -38,5 +38,6 @@ var_s *init_sh(char const **env)
     var->dup_stdout = dup(STDOUT_FILENO);
     var->dup_stdin = dup(STDIN_FILENO);
     var->pid_list = NULL;
+    check_local_var(var);
     return var;
 }

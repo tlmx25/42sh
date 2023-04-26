@@ -12,6 +12,7 @@
     #define SC (char const *)
     #define ABS(X) (X < 0) ? (X * (-1)) : X
     #define IS_NULL_N(X) (X == NULL) ? "/bin:/usr/bin:/usr" : X->var
+    #define IS_NN(X) (X == NULL) ? NULL : X->var
     #define IS_NULL(X) (X == NULL) ? NULL : X
     #define FLAG_APPEND O_CREAT | O_WRONLY | O_APPEND
     #define FLAG_ERASE O_CREAT | O_WRONLY | O_TRUNC
@@ -66,7 +67,10 @@ typedef struct commands {
     void (*fct)(char const **, var_s *);
 }command_l;
 
-
+typedef struct spe_char_s {
+    char spe_char;
+    void (*fct)(void);
+}spe_char_t;
 
 int mysh(int ac, char **av, char **env);
 void add_var(char const **info, var_list *list);
@@ -78,14 +82,14 @@ void exit_function(char const **arg, var_s *var);
 char **linkedlist_to_array(var_list *list);
 var_node *find_node(char const *name, var_list *list);
 void set_env(char const **arg, var_s *var);
-void exec_sys_function(var_s *variable, char **input);
+void exec_sys_function(var_s *var, char **input);
 void verify_env(var_s *var);
 void free_list(var_list *list);
 void unset_env(char const **arg, var_s *var);
 int my_str_isalphanum_env(char const *str);
 int my_str_isalpha_env(char const *str, char const *command);
 void cd_built_in(char const **arg, var_s *var);
-void separate_command_comma(var_s *variable, char *input);
+void separate_command_comma(var_s *var, char *input);
 void get_command(var_s *var, char **input);
 void verify_if_redirection(var_s *variable, char *input);
 void parsing_pipe(var_s *variable, char **input);
@@ -111,4 +115,18 @@ var_list *init_dico(char const *filepath);
 void handle_autocompletion(int c, char **input, var_s *var, int *cursor);
 void clean_list(var_list *list);
 void delete_with_globbing(char const *name, var_list *list);
+void check_local_var(var_s *var);
+void my_which_command(char const **info, var_s *var);
+void my_where_command(char const **info, var_s *var);
+void my_echo_command(char const **info, var_s *var);
+void backslash_double(void);
+void backslash_a(void);
+void backslash_b(void);
+void backslash_c(void);
+void backslash_e(void);
+void backslash_f(void);
+void backslash_n(void);
+void backslash_t(void);
+void backslash_v(void);
+void backslash_r(void);
 #endif

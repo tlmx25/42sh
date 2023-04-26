@@ -20,6 +20,7 @@ void manage_input(char **input, var_s *var)
 {
     size_t len = 0;
     int value;
+    var_node *node = find_node("ignoreof", LOCAL_VAR);
 
     if (isatty(STDIN_FILENO))
         write(1,"$> ", 3);
@@ -27,7 +28,7 @@ void manage_input(char **input, var_s *var)
         value = my_getline(input, var);
     else
         value = (int)getline(input, &len, stdin);
-    if (value == EOF) {
+    if (value == EOF && my_strcmp(IS_NN(node), "on") != 0) {
         free(*input);
         exit_function(NULL, var);
     }

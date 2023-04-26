@@ -66,15 +66,15 @@ void manager_no_exec(char *command)
     exit(1);
 }
 
-void exec_sys_function(var_s *variable, char **input)
+void exec_sys_function(var_s *var, char **input)
 {
     pid_t pid = fork();
     int result_exec;
     char *path_command;
-    char **env = linkedlist_to_array(variable->env_var);
+    char **env = linkedlist_to_array(ENV_VAR);
     if (pid == 0) {
         signal(SIGINT, SIG_DFL);
-        path_command = get_valid_pass(input[0], variable->env_var);
+        path_command = get_valid_pass(input[0], ENV_VAR);
         if (path_command == NULL || env == NULL)
             exit(1);
         result_exec = execve(path_command, input,env);
@@ -84,6 +84,6 @@ void exec_sys_function(var_s *variable, char **input)
     } else {
         waitpid(pid, &result_exec, 0);
         free_tab(env);
-        manager_fork(variable, result_exec);
+        manager_fork(var, result_exec);
     }
 }
