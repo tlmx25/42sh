@@ -15,5 +15,6 @@ void free_var(var_s *var)
     free_list(DICO);
     close(var->dup_stdin);
     close(var->dup_stdout);
+    free(var->prompt);
     free(var);
 }

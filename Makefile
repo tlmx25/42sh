@@ -19,6 +19,7 @@ VPATH += src/init
 VPATH += src/destroy
 VPATH += src/manage_file
 VPATH += src/input
+VPATH += src/input/prompt_function
 VPATH += src/built_in
 
 SRC += main.c
@@ -55,6 +56,9 @@ SRC += echo/spe_char/fiveth.c
 SRC += echo/spe_char/tenth.c
 SRC += which_where.c
 SRC += set_status_variable.c
+SRC += set_prompt.c
+SRC += prompt_function.c
+SRC += set_prompt_att.c
 
 CFLAGS = -I include/ -Wall -Wextra
 
