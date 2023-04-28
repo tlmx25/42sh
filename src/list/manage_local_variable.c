@@ -49,6 +49,7 @@ void set_local_var(const char **info, var_s *var)
         return;
     }
     set_multiple_var(info, var);
+    LOCAL_VAR->status = 1;
 }
 
 void unset_local_var(char const **info, var_s *var)
