@@ -65,7 +65,7 @@ static void manage_path(var_s *var, char *old_path)
 static int manage_chdir(char const **arg, var_s *var, char *old_path)
 {
     var_node *node = find_node("cwdcmd", ALIAS);
-    int *test;
+    int *list_tmp;
 
     if (chdir(verify_path(arg[1], ENV_VAR)) == -1) {
         STATUS = 1;
@@ -75,10 +75,10 @@ static int manage_chdir(char const **arg, var_s *var, char *old_path)
         return 1;
     }
     if (node != NULL) {
-        test = var->pid_list;
+        list_tmp = var->pid_list;
         var->pid_list = NULL;
         separate_command_comma(var, node->var);
-        var->pid_list = test;
+        var->pid_list = list_tmp;
     }
     return 0;
 }

@@ -31,10 +31,9 @@
 42sh prend également en charge les fonctionnalités avancées suivantes :
 
 * L'expansion des alias
+* variable local
 * L'auto-complétion des commandes et des noms de fichiers
 * La coloration syntaxique de la ligne de commande
-* L'affichage du temps de chaque commande exécutée
-* La possibilité de charger des plugins
 
 ## Utilisation
 
@@ -124,7 +123,32 @@ La commande `set` permet aussi de définir ou de modifier une variable local :
 ```shell
 $ set VAR=value VAR2=value2
 ```
+Le 42sh prend en compte certaine variable special :
+* `cwd` : Le nom de chemin complet du répertoire courant
+* `ignoreof` : si la variable est positionnée sur on le CTRL-D est ignoré
+* `?` : qui permet via le `$?` de recuperer le dernier retour de la function effectué
+* `prompt`: permet de définir un prompt personalisé grace à ces flags :
+  * `%~`: affiche le repertoire courant sans le $HOME (voir environement)
+  * `%/`: affiche le repertoire courant
+  * `%m` : affiche le nom d'hôte
+  * `%n`: affiche le nom d'utilisateur
+  * `%B (%b)` : Démarrer (stopper) le mode gras
+  * `%U (%u)` : Démarrer (stopper) le mode surligné
+  * `%I (%i)` : Démarrer (stopper) le mode italique
+  * `%S (%s)` : Démarrer (stopper) le mode clignotant (seulement sur les terminaux compatible)
+  * `%O (%r)` : Démarrer (stopper) le mode inversé
+  * `%o (%r)` : Démarrer (stopper) le mode invisible (seulement sur les terminaux compatible)
+  * `%F (%r)` : Démarrer (stopper) le mode barré
 
+Il est aussi possible d'appliquer certaine couleur sur la zone souhaité du prompt avec les flags :
+  * `%R` : Rouge
+  * `%G` : Vert
+  * `%Y` : Jaune
+  * `%C` : Bleu
+  * `%V` : Violet
+  * `%c` : Cyan
+  * `%g` : Gris
+Le flag `%r` rétablie quand à lui la couleur par default
 ### Commande `unset`
 
 La commande `unset` permet de supprimer une variable d'environnement ou un alias :
@@ -140,6 +164,9 @@ La commande `alias` permet de définir un alias pour une commande :
 ```shell
 $ alias ll 'ls -l'
 ```
+Le 42sh prend en compte certain alias special :
+* `precmd` : execute la commande donnée juste avant l'affichage du prompt
+* `cwdcmd` : execute la commande donnée à chaque changement de directory
 
 ### Commande `unalias`
 

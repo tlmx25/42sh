@@ -15,6 +15,7 @@ char *set_underline_text(var_s *var);
 char *set_blinks_text(var_s *var);
 char *get_directory_name(var_s *var);
 char *get_directory_name_without_home(UNU var_s *var);
+int is_color(char **tmp, char flag);
 
 static const prompt_t list_flags[] = {
         {'m', get_host_name},
@@ -29,6 +30,7 @@ static const prompt_t list_flags[] = {
         {'s', reset_att},
         {'/', get_directory_name},
         {'~', get_directory_name_without_home},
+        {'r', reset_att},
 };
 
 int is_flag_prompt(char c)
@@ -48,6 +50,10 @@ static char *parse_prompt(var_s *var, var_node *node)
 
     for (size_t i = 0; node->var[i]; i++) {
         flag = is_flag_prompt(node->var[i + 1]);
+        if (flag == 0 && is_color(&tmp, node->var[i + 1])) {
+            i++;
+            continue;
+        }
         if (node->var[i] == '%' && flag != 0) {
             str_flag = (char *) list_flags[flag - 1].fct(var);
             tmp = my_strcat_free(tmp, str_flag, 1, 1);
@@ -56,7 +62,7 @@ static char *parse_prompt(var_s *var, var_node *node)
         }
         tmp = my_str_cat_char(tmp, node->var[i], 7890987);
     }
-    return tmp;
+    return my_strcat_free(tmp, "\e[0m", 1, 0);
 }
 
 void set_prompt(var_s *var)
@@ -67,6 +73,9 @@ void set_prompt(var_s *var)
         var->prompt = CHOICE_PROMPT;
         return;
     }
+    if (LOCAL_VAR->status == 0)
+        return;
     free(var->prompt);
     var->prompt = parse_prompt(var, node);
+    LOCAL_VAR->status = 0;
 }

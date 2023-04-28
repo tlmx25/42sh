@@ -24,7 +24,7 @@ void manage_input(char **input, var_s *var)
 
     if (isatty(STDIN_FILENO)) {
         set_prompt(var);
-        my_printf("%s ", var->prompt);
+        my_printf("%s ", (var->prompt != NULL) ? var->prompt : "$> ");
     }
     if (isatty(STDIN_FILENO) && var->mode == EDITING)
         value = my_getline(input, var);

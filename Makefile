@@ -59,6 +59,7 @@ SRC += set_status_variable.c
 SRC += set_prompt.c
 SRC += prompt_function.c
 SRC += set_prompt_att.c
+SRC += prompt_color.c
 
 CFLAGS = -I include/ -Wall -Wextra
 
