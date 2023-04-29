@@ -113,5 +113,6 @@ void handle_autocompletion(int c, char **input, var_s *var, int *cursor);
 void clean_list(var_list *list);
 void delete_with_globbing(char const *name, var_list *list);
 int check_if_separators(char *input);
-void handle_separators(char *input);
+int exec_command_pipe(char **input, int fd[2], var_s *var, int i);
+void handle_separators(char **input, int i, var_s *var, int fd[2]);
 #endif

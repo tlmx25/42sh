@@ -45,7 +45,7 @@ void manager_last_part_built_in(var_s *variable, char *input, int fd[2])
     close(fd[1]);
 }
 
-static int exec_command_pipe(char **input, int fd[2], var_s *var, int i)
+int exec_command_pipe(char **input, int fd[2], var_s *var, int i)
 {
     int pid;
 
@@ -73,11 +73,13 @@ void parsing_pipe(var_s *variable, char **input)
     if (pipe(fd) == -1)
         return;
     for (int i = 0; input[i]; i++) {
-        printf("line = %s\n", input[i]);
+        printf("input = %s\n", input[i]);
         if (check_if_separators(input[i])) {
-            handle_separators(input[i]);
-            break;
+            handle_separators(input, i, variable, fd);
+            exit(0);
+            // break;
         }
+        // ne pas break car si | doit pouvoir exécuter suite
         if (exec_command_pipe(input, fd, variable, i))
             break;
     }
