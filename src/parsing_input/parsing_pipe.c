@@ -75,11 +75,12 @@ void parsing_pipe(var_s *variable, char **input)
     for (int i = 0; input[i]; i++) {
         printf("input = %s\n", input[i]);
         if (check_if_separators(input[i])) {
-            handle_separators(input, i, variable, fd);
-            exit(0);
-            // break;
+            handle_separators(input, i, variable);
+            break;
+            // si dernière cmd marche, la mettre en haut de l'input pour
+            // pipe dessus
         }
-        // ne pas break car si | doit pouvoir exécuter suite
+        // input envoyé à cette fonction = transformé pour aller dans pipe
         if (exec_command_pipe(input, fd, variable, i))
             break;
     }

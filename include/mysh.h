@@ -92,6 +92,8 @@ void verify_if_redirection(var_s *variable, char *input);
 void parsing_pipe(var_s *variable, char **input);
 int *add_pid(int *actual_list, int pid);
 void erase_name(char **array);
+int check_for_double_pipe(char *input);
+char **tab_cut_separators(char const *str);
 char *get_name(char const *str);
 int is_built_in(const char *command);
 char *get_left_redirection(var_s *variable, char *input);
@@ -114,5 +116,6 @@ void clean_list(var_list *list);
 void delete_with_globbing(char const *name, var_list *list);
 int check_if_separators(char *input);
 int exec_command_pipe(char **input, int fd[2], var_s *var, int i);
-void handle_separators(char **input, int i, var_s *var, int fd[2]);
+void handle_separators(char **input, int i, var_s *var);
+char **my_str_to_word_pipe(char const *str, char *separators);
 #endif

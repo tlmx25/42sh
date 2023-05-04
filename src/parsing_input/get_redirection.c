@@ -53,9 +53,14 @@ static void managing_pipe(var_s *variable, char **pipe_input, int size)
 
 static void choice_execution_function(char *input, var_s *variable)
 {
-    char **pipe_input = my_str_to_word_array(input, "|");
-    int size = my_arrsize(AC pipe_input);
+    char **pipe_input;
+    int size;
 
+    if (check_for_double_pipe(input))
+        pipe_input = my_str_to_word_pipe(input, "|");
+    else
+        pipe_input = my_str_to_word_array(input, "|");
+    size = my_arrsize(AC pipe_input);
     if (pipe_input == NULL)
         return;
     if (pipe_input[0] != NULL) {

@@ -1,38 +1,40 @@
 /*
 ** EPITECH PROJECT, 2022
-** Pokedex
+** B-PSU-200-REN-2-1-42sh-arthur.doriel
 ** File description:
-** Str to word array
+** my_str_to_word_pipe.c
 */
 
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include "my.h"
 
-int my_strlen(char const *str);
-void free_tab(char **tab);
-
-int is_alphanum(char c)
+int check_for_double_pipe(char *input)
 {
-    return (
-        (c >= 'a' && c <= 'z')
-        || (c >= 'A' && c <= 'Z')
-        || (c >= '0' && c <= '9')
-        );
+    for (int i = 0; i < my_strlen(input); i++) {
+        if (input[i] == '|' && input[i + 1] == '|')
+            return 1;
+    }
+    return 0;
 }
 
-int is_separator(char const *separators, char letter)
+static int is_sep(char const *separators, char letter, char after, char before)
 {
     if (separators == NULL)
         return 0;
     for (int i = 0; separators[i]; i++) {
+        if (separators[i] == letter && letter == after)
+            return 0;
+        if (separators[i] == letter && letter == before)
+            return 0;
         if (separators[i] == letter)
             return 1;
     }
     return 0;
 }
 
-int count_word(char const *str, char *separators)
+static int count(char const *str, char *separators)
 {
     int count = 0;
     size_t len = my_strlen(str);
@@ -40,14 +42,14 @@ int count_word(char const *str, char *separators)
     if (str == NULL)
         return 0;
     for (size_t i = 0; i < len; i++) {
-        if (is_separator(separators, str[i]) &&
-        !is_separator(separators,str[i + 1]))
+        if (is_sep(separators, str[i], str[i + 1], str[i - 1]))
             count += 1;
     }
-    return count + (len > 0 && !is_separator(separators, str[len - 1]));
+    return count + (len > 0 &&
+    !is_sep(separators, str[len - 1], str[len - 2], str[len]));
 }
 
-static int fill_tab(char **tab, size_t len, char const *str, char *separators)
+static int fill(char **tab, size_t len, char const *str, char *separators)
 {
     int z = 0;
     int check;
@@ -56,8 +58,10 @@ static int fill_tab(char **tab, size_t len, char const *str, char *separators)
     for (size_t i = 0; i < len; i++) {
         check = 0;
         save = i;
-        for (; is_separator(separators, str[i]) && i < len; i++, save++);
-        for (; !is_separator(separators, str[i]) && i < len; check++, i++);
+        for (; is_sep(separators, str[i], str[i + 1], str[i - 1]) &&
+        i < len; i++, save++);
+        for (; !is_sep(separators, str[i], str[i + 1], str[i - 1]) &&
+        i < len; check++, i++);
         tab[z] = malloc(sizeof(char) * (check + 1));
         if (tab[z] == NULL)
             return 84;
@@ -69,10 +73,10 @@ static int fill_tab(char **tab, size_t len, char const *str, char *separators)
     return 0;
 }
 
-char **my_str_to_word_array(char const *str, char *separators)
+char **my_str_to_word_pipe(char const *str, char *separators)
 {
     size_t len = my_strlen(str);
-    int nb_word = count_word(str, separators);
+    int nb_word = count(str, separators);
     char **tab = malloc(sizeof(char *) * (nb_word + 1));
 
     for (int i = 0; i <= nb_word; i++)
@@ -81,7 +85,7 @@ char **my_str_to_word_array(char const *str, char *separators)
         free(tab);
         return NULL;
     }
-    if (fill_tab(tab, len, str, separators) == 84) {
+    if (fill(tab, len, str, separators) == 84) {
         free_tab(tab);
         return NULL;
     }

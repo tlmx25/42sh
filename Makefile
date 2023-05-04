@@ -49,6 +49,8 @@ SRC += manage_input.c
 SRC += autocompletion.c
 SRC += delete_with_globbing.c
 SRC += separators.c
+SRC += cut_separators.c
+SRC += my_str_to_word_pipe.c
 
 CFLAGS = -I include/ -Wall -Wextra
 
