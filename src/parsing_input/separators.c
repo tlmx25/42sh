@@ -9,9 +9,10 @@
 
 int check_if_separators(char *input)
 {
-    for (int i = 0; input[i] != '\n'; i++) {
-        if ((input[i] == '&' && input[i + 1] == '&') ||
-        (input[i] == '|' && input[i + 1] == '|'))
+    for (int i = 0; i < my_strlen(input); i++) {
+        if ((input[i] == '&' && (i + 1 < my_strlen(input)) &&
+        input[i + 1] == '&') || (input[i] == '|' && (i + 1 < my_strlen(input))
+        && input[i + 1] == '|'))
             return 1;
     }
     return 0;
