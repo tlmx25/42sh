@@ -37,6 +37,9 @@ static void handle_arrow_keys(UNU char** input, int* len, int* cursor)
         my_printf("\033[C");
         (*cursor)++;
     }
+    if (key == 'A') {
+        my_printf("\n");
+    }
 }
 
 void set_char(int *len, int *cursor, char **input, int c)
@@ -84,7 +87,7 @@ int my_getline(char **input, var_s *var)
     int value;
 
     if (*input == NULL)
-        *input = my_strdup("");
+        *input = my_calloc(1);
     if (*input == NULL) {
         return -1;
     }

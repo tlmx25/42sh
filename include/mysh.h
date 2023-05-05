@@ -121,7 +121,7 @@ int check_variable(char **all_command, var_s *var);
 int my_getline(char **input, var_s *var);
 void manage_input(char **input, var_s *var);
 var_list *init_dico(char const *filepath);
-void handle_autocompletion(int c, char **input, var_s *var, int *cursor);
+void handle_autocompletion(int c, char **input, var_s *var, const int *cursor);
 void clean_list(var_list *list);
 void delete_with_globbing(char const *name, var_list *list);
 void check_local_var(var_s *var);

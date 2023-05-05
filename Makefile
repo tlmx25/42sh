@@ -60,6 +60,7 @@ SRC += set_prompt.c
 SRC += prompt_function.c
 SRC += set_prompt_att.c
 SRC += prompt_color.c
+SRC += get_name_file.c
 
 CFLAGS = -I include/ -Wall -Wextra
 
@@ -108,6 +109,7 @@ fclean: clean tests_clean
 	make fclean -C lib/my_printf/
 	rm -f $(NAME)
 	@ echo "$(RED)fclean successful !$(NC)"
+
 
 #tests_run: CFLAGS += -lcriterion --coverage
 tests_run:	$(OBJ)
