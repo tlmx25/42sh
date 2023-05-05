@@ -21,6 +21,8 @@ VPATH += src/manage_file
 VPATH += src/input
 VPATH += src/input/prompt_function
 VPATH += src/built_in
+VPATH += src/history
+VPATH += src/!
 
 SRC += main.c
 SRC += mysh.c
@@ -60,6 +62,13 @@ SRC += set_prompt.c
 SRC += prompt_function.c
 SRC += set_prompt_att.c
 SRC += prompt_color.c
+SRC += history_print.c
+SRC += init_history.c
+SRC += take_history.c
+SRC += clear_history.c
+SRC += free_history.c
+SRC += base.c
+SRC += manage_command.c
 SRC += get_name_file.c
 
 CFLAGS = -I include/ -Wall -Wextra
@@ -109,7 +118,6 @@ fclean: clean tests_clean
 	make fclean -C lib/my_printf/
 	rm -f $(NAME)
 	@ echo "$(RED)fclean successful !$(NC)"
-
 
 #tests_run: CFLAGS += -lcriterion --coverage
 tests_run:	$(OBJ)

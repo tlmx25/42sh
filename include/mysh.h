@@ -22,6 +22,7 @@
     #define ENV_VAR var->env_var
     #define ALIAS var->alias
     #define DICO var->dico
+    #define HISTORY var->history
     #define PROMPT var->prompt
     #define CMP my_strcmp(PROMPT, "$> ") == 0
     #define CHOICE_PROMPT (CMP) ? PROMPT : my_strdup("$> ")
@@ -32,6 +33,8 @@
     #include <sys/wait.h>
     #include "my.h"
     #include "myprintf.h"
+    #include "history.h"
+    #include <time.h>
 
 enum MODE {
     CLASSIC,
@@ -57,6 +60,7 @@ typedef struct var {
     var_list *local_var;
     var_list *alias;
     var_list *dico;
+    history_t *history;
     int fd_redirection_out;
     int fd_redirection_in;
     int dup_stdout;
@@ -141,4 +145,11 @@ void backslash_v(void);
 void backslash_r(void);
 void set_status_variable(var_s *var);
 void set_prompt(var_s *var);
+void history(char const **info, var_s *var);
+history_t *init_history(void);
+void take_history(char *, var_s *);
+void clear_history(var_s *);
+void free_history(var_s *);
+void take_excla(char **command, var_s *data);
+char *manage_command(char *command,var_s *data);
 #endif
