@@ -12,12 +12,10 @@
 
 static int is_separators(char letter, char after, char before)
 {
-    if ((letter == '&' && after == letter) ||
-    (letter == '&' && before == letter))
+    if ((letter == '&' && (after == '&' || before == '&')) ||
+        (letter == '|' && (after == '|' || before == '|'))) {
         return 1;
-    if ((letter == '|' && after == letter) ||
-    (letter == '|' && before == letter))
-        return 1;
+    }
     return 0;
 }
 
@@ -29,11 +27,17 @@ static int count_words(char const *str)
     if (str == NULL)
         return 0;
     for (size_t i = 0; i < len; i++) {
-        if (is_separators(str[i], str[i + 1], str[i - 1]))
+        if (i > 0 && i < len - 1 && is_separators(str[i], str[i + 1],
+        str[i - 1]))
             count += 1;
     }
-    return count + (len > 0 &&
-    !is_separators(str[len - 1], str[len - 2], str[len]));
+    if (len == 0) {
+        return 0;
+    } else if (len == 1) {
+        return !is_separators(str[0], '\0', '\0');
+    } else {
+        return count + !is_separators(str[len - 1], str[len - 2], '\0');
+    }
 }
 
 static int tab_fill(char **tab, size_t len, char const *str)
@@ -45,10 +49,10 @@ static int tab_fill(char **tab, size_t len, char const *str)
     for (size_t i = 0; i < len; i++) {
         check = 0;
         save = i;
-        for (; is_separators(str[i], str[i + 1], str[i - 1]) &&
-        i < len; i++, save++);
-        for (; !is_separators(str[i], str[i + 1], str[i - 1]) &&
-        i < len; check++, i++);
+        for (; i < len && is_separators(str[i], (i + 1 < len ? str[i + 1]
+        : '\0'), (i > 0 ? str[i - 1] : '\0')); i++, save++);
+        for (; i < len && !is_separators(str[i], (i + 1 < len ? str[i + 1]
+        : '\0'), (i > 0 ? str[i - 1] : '\0')); check++, i++);
         tab[z] = malloc(sizeof(char) * (check + 1));
         if (tab[z] == NULL)
             return 84;

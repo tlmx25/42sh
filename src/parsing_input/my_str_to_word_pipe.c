@@ -13,7 +13,8 @@
 int check_for_double_pipe(char *input)
 {
     for (int i = 0; i < my_strlen(input); i++) {
-        if (input[i] == '|' && input[i + 1] == '|')
+        if (i + 1 < my_strlen(input) &&
+        (input[i] == '|' && input[i + 1] == '|'))
             return 1;
     }
     return 0;
@@ -22,6 +23,8 @@ int check_for_double_pipe(char *input)
 static int is_sep(char const *separators, char letter, char after, char before)
 {
     if (separators == NULL)
+        return 0;
+    if (after == '\0' || before == '\0')
         return 0;
     for (int i = 0; separators[i]; i++) {
         if (separators[i] == letter && letter == after)
@@ -42,11 +45,18 @@ static int count(char const *str, char *separators)
     if (str == NULL)
         return 0;
     for (size_t i = 0; i < len; i++) {
-        if (is_sep(separators, str[i], str[i + 1], str[i - 1]))
+        if (i > 0 && i < len - 1 &&
+        is_sep(separators, str[i], str[i + 1], str[i - 1]))
             count += 1;
     }
-    return count + (len > 0 &&
-    !is_sep(separators, str[len - 1], str[len - 2], str[len]));
+    if (len == 0) {
+        return 0;
+    } else if (len == 1) {
+        return is_sep(separators, str[0], '\0', '\0') ? 0 : 1;
+    } else {
+        return count + (is_sep(separators, str[0], '\0', '\0') ? 0 : 1) +
+        (is_sep(separators, str[len - 1], '\0', str[len - 2]) ? 0 : 1);
+    }
 }
 
 static int fill(char **tab, size_t len, char const *str, char *separators)
@@ -58,10 +68,10 @@ static int fill(char **tab, size_t len, char const *str, char *separators)
     for (size_t i = 0; i < len; i++) {
         check = 0;
         save = i;
-        for (; is_sep(separators, str[i], str[i + 1], str[i - 1]) &&
-        i < len; i++, save++);
-        for (; !is_sep(separators, str[i], str[i + 1], str[i - 1]) &&
-        i < len; check++, i++);
+        for (; i < len && is_sep(separators, str[i], (i + 1 < len) ?
+        str[i + 1] : '\0', (i > 0) ? str[i - 1] : '\0'); i++, save++);
+        for (; i < len && !is_sep(separators, str[i], (i + 1 < len) ?
+        str[i + 1] : '\0', (i > 0) ? str[i - 1] : '\0'); check++, i++);
         tab[z] = malloc(sizeof(char) * (check + 1));
         if (tab[z] == NULL)
             return 84;
