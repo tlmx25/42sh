@@ -23,13 +23,17 @@ char *manage_command(char *command, var_s *data)
 {
     char **temp_commands = my_str_to_word_array(command, ";");
     int i = 0;
+    char *tmp = NULL;
 
     for (;temp_commands[i] != NULL;i++) {
-        if (temp_commands[i][0] == '!')
+        if (temp_commands[i][0] == '!') {
+            tmp = temp_commands[i];
             temp_commands[i] = take_old_history(my_getnbr(temp_commands[i])
             ,data);
+            free(tmp);
+        }
     }
-    command = my_array_to_str_separator(temp_commands," ");
+    command = my_array_to_str_separator(AC temp_commands," ");
     free_tab(temp_commands);
     return command;
 }

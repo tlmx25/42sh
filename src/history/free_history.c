@@ -11,5 +11,4 @@ void free_history(var_s *var)
 {
     clear_history(var);
     free(HISTORY);
-    return;
 }

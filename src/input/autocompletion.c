@@ -49,6 +49,7 @@ void handle_autocompletion(int c, char **input, var_s *var, const int *cursor)
     int size_array = my_arrsize(AC command);
 
     if (c != '\t') {
+        free_tab(command);
         *input = my_str_cat_char(*input, (char)c, *cursor);
         return;
     }
@@ -59,4 +60,5 @@ void handle_autocompletion(int c, char **input, var_s *var, const int *cursor)
     if (size_array != 1 && command != NULL)
         return;
     open_dir(input);
+    free_tab(command);
 }
