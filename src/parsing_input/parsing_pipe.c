@@ -73,7 +73,6 @@ void parsing_pipe(var_s *variable, char **input)
     if (pipe(fd) == -1)
         return;
     for (int i = 0; input[i]; i++) {
-        printf("input = %s\n", input[i]);
         if (check_if_separators(input[i])) {
             handle_separators(input, i, variable);
             break;
