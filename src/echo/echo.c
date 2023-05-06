@@ -46,10 +46,9 @@ void my_echo_command(char const **info, UNU var_s *var)
     char *command = my_array_to_str_separator(info, " ");
     command[my_strlen(command)] = '\0';
 
-    if (!info[1]) {
+    if (!info[1])
         my_printf("\n");
-        return;
-    }
-    print_echo(command);
+    else
+        print_echo(command);
     free(command);
 }
