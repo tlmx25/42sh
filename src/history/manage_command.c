@@ -65,7 +65,7 @@ char *manage_command(char *command, var_s *data)
         free_tab(temp_commands);
         return return_command;
     }
-    command = my_array_to_str_separator(temp_commands,";");
+    command = my_array_to_str_separator(AC temp_commands,";");
     free_tab(temp_commands);
     return command;
 }

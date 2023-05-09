@@ -26,3 +26,5 @@ tester_out.txt
 .local_var
 .alias
 my_tester.sh
+.vscode
+.history

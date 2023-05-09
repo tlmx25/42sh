@@ -50,15 +50,16 @@ int read_history(char *command,var_s *var)
 void load_history(var_s *data)
 {
     char **content_file = open_read_content_file(
-            get_nb_line_file(".history"), ".history");
+            get_nb_line_file(HIS_FILE), HIS_FILE);
 
-    if (content_file == NULL)
+    if (content_file == NULL) {
+        free_tab(content_file);
         return;
+    }
     for (int i = 0;content_file[i] != NULL;i++) {
         read_history(content_file[i],data);
         if (data->history->tail != NULL)
             data->history->lengh = data->history->tail->indice + 1;
     }
     free_tab(content_file);
-    return;
 }
