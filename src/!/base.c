@@ -28,6 +28,21 @@ int compare_history(int nbr, var_s *data,char **commands)
     return 1;
 }
 
+int compare_command(var_s *data, char **commands)
+{
+    node_t *temp_node = data->history->tail;
+
+    for (;temp_node != NULL;temp_node = temp_node->prev) {
+        if (my_strncmp(commands[0], temp_node->command,
+        my_strlen(commands[0])) == 0) {
+            commands[0] = temp_node->command;
+            my_printf("%s\n", commands[0]);
+            return 0;
+        }
+    }
+    return 1;
+}
+
 void take_excla(char **command, var_s *data)
 {
     int indice = 0;
@@ -37,15 +52,16 @@ void take_excla(char **command, var_s *data)
         return;
     }
     command[0] = my_clean_string(command[0],"!",1);
-    if (my_str_isnum(command[0]) == 0) {
-        my_printf("%s: Event not found.\n", command[0]);
+    if (compare_command(data, command) == 0) {
+        execute_command(command[0], data);
         return;
     }
-    indice = my_getnbr(command[0]);
-    if (compare_history(indice, data, command) == 1) {
-        my_printf("%s: Event not found.\n", command[0]);
+    if (my_str_isnum(command[0]) == 1) {
+        indice = my_getnbr(command[0]);
+        compare_history(indice, data, command);
+        execute_command(command[0], data);
         return;
     }
-    execute_command(command[0], data);
+    my_printf("%s: Event not found.\n", command[0]);
     return;
 }

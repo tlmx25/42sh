@@ -69,6 +69,9 @@ SRC += clear_history.c
 SRC += free_history.c
 SRC += base.c
 SRC += manage_command.c
+SRC += exception.c
+SRC += load_history.c
+SRC += save_history.c
 
 CFLAGS = -I include/ -Wall -Wextra
 
