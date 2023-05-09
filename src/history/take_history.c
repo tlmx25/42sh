@@ -53,7 +53,7 @@ void take_history(char *command,var_s *var)
 {
     node_t *cell = NULL;
 
-    if (void_command(command) == 0)
+    if (void_command(command) == 0 || exception_detection(command, var) == 1)
         return;
     cell = malloc(sizeof(node_t));
     command = manage_command(command, var);

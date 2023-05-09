@@ -112,6 +112,8 @@ char *get_name(char const *str);
 int is_built_in(const char *command);
 char *get_left_redirection(var_s *variable, char *input);
 var_s *init_sh(char const **env);
+void load_history(var_s *data);
+void save_history(var_s *data, int fd_stdout);
 void open_write_list(var_list *list, char const *filepath, int fd_stdout);
 var_list *init_list_variable(char const *filepath);
 void free_var(var_s *var);
@@ -152,4 +154,5 @@ void clear_history(var_s *);
 void free_history(var_s *);
 void take_excla(char **command, var_s *data);
 char *manage_command(char *command,var_s *data);
+int exception_detection(char *command,var_s *data);
 #endif
