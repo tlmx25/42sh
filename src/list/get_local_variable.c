@@ -28,6 +28,9 @@ static int check_simple_variable(char **command, var_s *var)
     for (size_t i = 0; command[i]; i++) {
         if (command[i][0] != '$' || command[i][1] == '\0')
             continue;
+        if (my_str_in_str(command[i], "${}") && my_printf("%z", ILL_N_VAR))
+            return 1;
+        command[i] = my_clean_string(command[i], "{}", 1);
         node = find_node(&command[i][1], LOCAL_VAR);
         if (node == NULL)
             node = find_node(&command[i][1], ENV_VAR);
@@ -48,6 +51,8 @@ int check_variable(char **all_command, var_s *var)
 
     for (size_t i = 0; all_command[i] && !status; i++) {
         command = my_str_to_word_array(all_command[i], " \t");
+        if (command == NULL)
+            continue;
         status = check_simple_variable(command, var);
         free(all_command[i]);
         all_command[i] = my_array_to_str_separator(AC command, " ");

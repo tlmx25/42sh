@@ -14,5 +14,4 @@ void free_history(var_s *var)
     save_history(var, var->dup_stdout);
     clear_history(var);
     free(HISTORY);
-    return;
 }

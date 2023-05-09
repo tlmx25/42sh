@@ -52,6 +52,7 @@ char *manage_command(char *command, var_s *data)
 {
     char **temp_commands = my_str_to_word_array(command, ";");
     int i = 0;
+
     char *return_command = NULL;
 
     for (;temp_commands[i] != NULL;i++) {

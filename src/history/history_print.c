@@ -20,14 +20,16 @@ void print_nbr(int nbr)
         my_printf("  ");
     if (nbr > 9999)
         my_printf(" ");
-    return;
 }
 
 void print_history(var_s *var,int nbr)
 {
-    node_t *temp_node = HISTORY->tail;
+    node_t *temp_node;
     int i = 0;
 
+    if (HISTORY == NULL || HISTORY->tail == NULL)
+        return;
+    temp_node = HISTORY->tail;
     for (;i != nbr - 1 && temp_node->prev != NULL;i++) {
         temp_node = temp_node->prev;
     }
@@ -37,7 +39,6 @@ void print_history(var_s *var,int nbr)
         my_printf("%s", temp_node->date);
         my_printf("   %s\n", temp_node->command);
     }
-    return;
 }
 
 void history(char const **command,var_s *var)
@@ -58,5 +59,4 @@ void history(char const **command,var_s *var)
     if (my_str_isnum(command[1]) == 0) {
         my_printf("history: Badly formed number.\n");
     }
-    return;
 }

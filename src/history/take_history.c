@@ -32,7 +32,7 @@ int void_command(char *buffer)
 
 void add_link_list(node_t *node, char *command,var_s *var)
 {
-    node->command = my_strdup(command);
+    node->command = command;
     node->date = take_time();
     node->indice = HISTORY->lengh;
     if (HISTORY->head == NULL) {

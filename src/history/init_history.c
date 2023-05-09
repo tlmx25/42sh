@@ -14,6 +14,7 @@ history_t *init_history(void)
 
     new_history->head = NULL;
     new_history->tail = NULL;
+    new_history->actual = NULL;
     new_history->lengh = 1;
     return new_history;
 }

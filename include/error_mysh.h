@@ -26,6 +26,7 @@
     #define CMD_NOT_FOUND ": Command not found.\n"
     #define SH_BUILT_CMD ": shell built-in command.\n"
     #define SH_IS_BUILT_CMD " is a shell built-in\n"
+    #define ILL_N_VAR "Illegal variable name.\n"
     #define IS_RDRECT(X) (X == '<' || X == '>') ? 1 : 0
 
 typedef struct signal_error {

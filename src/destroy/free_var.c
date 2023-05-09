@@ -17,5 +17,6 @@ void free_var(var_s *var)
     close(var->dup_stdin);
     close(var->dup_stdout);
     free(var->prompt);
+    free_history(var);
     free(var);
 }

@@ -11,14 +11,14 @@
 void clear_history(var_s *var)
 {
     node_t *temp_node = HISTORY->head;
-
+    node_t *next = NULL;
     if (temp_node == NULL)
         return;
-    for (;temp_node->next != NULL;temp_node = temp_node->next) {
+    for (;temp_node->next != NULL;temp_node = next) {
+        next = temp_node->next;
         free(temp_node->command);
         free(temp_node->date);
-        if (temp_node->prev != NULL)
-            free(temp_node->prev);
+        free(temp_node);
     }
     free(temp_node->command);
     free(temp_node->date);

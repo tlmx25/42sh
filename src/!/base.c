@@ -10,17 +10,25 @@
 
 void execute_command(char *input,var_s *var)
 {
-    if (input != NULL)
-        separate_command_comma(var,input);
-    return;
+    int *tmp;
+
+    if (input == NULL)
+        return;
+    tmp = var->pid_list;
+    separate_command_comma(var,input);
+    var->pid_list = tmp;
 }
 
-int compare_history(int nbr, var_s *data,char **commands)
+int compare_history(int nbr, var_s *var, char **commands)
 {
-    node_t *temp_node = data->history->head;
+    node_t *temp_node = NULL;
 
+    if (HISTORY == NULL || HISTORY->head == NULL)
+        return 1;
+    temp_node = HISTORY->head;
     for (;temp_node->next != NULL;temp_node = temp_node->next) {
         if (temp_node->indice == nbr) {
+            free(commands[0]);
             commands[0] = temp_node->command;
             return 0;
         }
@@ -60,8 +68,8 @@ void take_excla(char **command, var_s *data)
         indice = my_getnbr(command[0]);
         compare_history(indice, data, command);
         execute_command(command[0], data);
+        free(command[0]);
         return;
     }
     my_printf("%s: Event not found.\n", command[0]);
-    return;
 }

@@ -19,6 +19,7 @@
     typedef struct history {
         node_t *head;
         node_t *tail;
+        node_t *actual;
         int lengh;
     } history_t;
 
