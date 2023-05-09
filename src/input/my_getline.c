@@ -9,6 +9,8 @@
 #include "mysh.h"
 char *my_str_del_char(char *str, int cursor);
 int clean_line(int len, int cursor);
+void move_in_history_up(var_s *var, char **input, int *cursor, int *len);
+void move_in_history_down(var_s *var, char **input, int *cursor, int *len);
 
 static struct termios set_term(void)
 {
@@ -23,9 +25,10 @@ static struct termios set_term(void)
     return old_termios;
 }
 
-static void handle_arrow_keys(UNU char** input, int* len, int* cursor)
+static void handle_arrow_keys(char **input, int *len, int *cursor, var_s *var)
 {
     char key;
+
     if (getchar() != '[')
         return;
     key = (char)getchar();
@@ -36,6 +39,12 @@ static void handle_arrow_keys(UNU char** input, int* len, int* cursor)
     if (key == 'C' && *cursor < *len) {
         my_printf("\033[C");
         (*cursor)++;
+    }
+    if (key == 'A') {
+        move_in_history_up(var, input, cursor, len);
+    }
+    if (key == 'B') {
+        move_in_history_down(var, input, cursor, len);
     }
 }
 
@@ -65,7 +74,7 @@ static int get_input(char **input, var_s *var)
         if (c == 4 || c == 13 || c == EOF)
             return clean_line(len, cursor);
         if (c == 27) {
-            handle_arrow_keys(input, &len, &cursor);
+            handle_arrow_keys(input, &len, &cursor, var);
             continue;
         }
         if ((c < 32 || c > 127) && !is_separator("\t\n", (char)c))
@@ -84,11 +93,12 @@ int my_getline(char **input, var_s *var)
     int value;
 
     if (*input == NULL)
-        *input = my_strdup("");
+        *input = my_calloc(1);
     if (*input == NULL) {
         return -1;
     }
     value = get_input(input, var);
     tcsetattr(STDIN_FILENO, TCSANOW, &old_termios);
+    HISTORY->actual = NULL;
     return value;
 }

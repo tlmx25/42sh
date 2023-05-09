@@ -64,7 +64,6 @@ void my_echo_command(char const **info, UNU var_s *var)
         my_printf("\n");
         return;
     }
-
     if (my_strcmp(info[1], "-n") == 0)
         flags = 3;
     print_echo(command, flags);

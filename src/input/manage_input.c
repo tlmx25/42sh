@@ -35,4 +35,5 @@ void manage_input(char **input, var_s *var)
         exit_function(NULL, var);
     }
     input[0][value - 1] = '\0';
+    take_history(input[0], var);
 }

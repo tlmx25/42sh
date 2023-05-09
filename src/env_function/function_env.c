@@ -37,11 +37,12 @@ void delete_env_var(const char *name, var_list *list)
 void set_env(char const **arg, var_s *var)
 {
     var_node *node;
+
     if (my_arrsize(arg) == 1) {
         print_env_list(arg, var);
         return;
     }
-    if (my_arrsize(arg) > 3) {
+    if (my_arrsize(arg) > 3 || arg == NULL) {
         my_printf("%z", SE_MANY_ARG, (STATUS = 1));
         return;
     }
@@ -49,7 +50,6 @@ void set_env(char const **arg, var_s *var)
         STATUS = 1;
         return;
     }
-
     if ((node = find_node(arg[1], ENV_VAR)) != NULL) {
         free(node->var);
         node->var = my_strdup(arg[2]);

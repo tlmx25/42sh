@@ -11,6 +11,7 @@
 var_node *find_node(char const *name, var_list *list)
 {
     var_node *node = list->head;
+
     while (node != NULL && my_strcmp(node->name, name) != 0)
         node = node->next;
     return node;
