@@ -51,7 +51,6 @@
     char my_getop(char *str);
     int is_alpha(char c);
     int my_nbletter(char *str);
-    char **my_dellign(char **tab, int key_del);
     void my_puterror(char *error);
     char **my_addlign(char **tab, char *str, int key);
     int my_puttab(char **tab);
@@ -71,4 +70,5 @@
     size_t my_count_char(char const *str, char c);
     char *my_array_to_str_separator(char const **array, char const *separator);
     char my_get_last_char(char const *str, char const *skip_char);
+    char **my_delline(char **array, int key);
 #endif /* _MY_H_ */

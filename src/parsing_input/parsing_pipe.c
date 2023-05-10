@@ -66,12 +66,12 @@ int exec_command_pipe(char **input, int fd[2], var_s *var, int i)
 
 char **input_after(char **input, char **cmd, int i)
 {
-    input = my_dellign(input, i);
+    input = my_delline(input, i);
     char *command = NULL;
 
     for (int j = 0; cmd[j] != NULL; j++)
         command = my_strcat(cmd[j], " ");
-    if (input[0] == NULL) {
+    if (input != NULL && input[0] == NULL) {
         input = malloc(sizeof(char *) * 2);
         input[0] = my_strdup(command);
         input[1] = NULL;
