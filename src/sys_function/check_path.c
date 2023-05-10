@@ -12,10 +12,12 @@ char *check_path(char *command, char **path)
 {
     char *path_temp = NULL;
 
-    for (size_t i = 0; (my_str_in_str(command, "/") == 0) && IS_NULL(path)[i]; i++) {
+    for (size_t i = 0; (my_str_in_str(command, "/") == 0)
+    && IS_NULL(path)[i]; i++) {
         if (my_str_in_str(command, "/"))
             break;
-        path_temp = my_strcat_free(my_strcat(IS_NULL(path)[i], "/"), command, 1, 0);
+        path_temp = my_strcat_free(my_strcat(IS_NULL(path)[i], "/"),
+        command, 1, 0);
         if (!access(path_temp, F_OK)) {
             return path_temp;
         }
