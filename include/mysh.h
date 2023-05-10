@@ -27,6 +27,7 @@
     #define CMP my_strcmp(PROMPT, "$> ") == 0
     #define CHOICE_PROMPT (CMP) ? PROMPT : my_strdup("$> ")
     #define HAVE_NAME_ARG(X) (X[1] == '>') ? &X[1] : X
+    #define ACSS_X_F (!access(command, F_OK) && !access(command, X_OK))
     #include <unistd.h>
     #include <string.h>
     #include <sys/types.h>
@@ -155,4 +156,5 @@ void free_history(var_s *);
 void take_excla(char **command, var_s *data);
 char *manage_command(char *command,var_s *data);
 int exception_detection(char *command,var_s *data);
+char *check_path(char *command, char **path);
 #endif
