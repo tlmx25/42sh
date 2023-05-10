@@ -116,6 +116,6 @@ void clean_list(var_list *list);
 void delete_with_globbing(char const *name, var_list *list);
 int check_if_separators(char *input);
 int exec_command_pipe(char **input, int fd[2], var_s *var, int i);
-void handle_separators(char **input, int i, var_s *var);
+char **handle_separators(char **input, int i, var_s *var);
 char **my_str_to_word_pipe(char const *str, char *separators);
 #endif

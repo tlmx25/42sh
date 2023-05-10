@@ -64,24 +64,54 @@ int exec_command_pipe(char **input, int fd[2], var_s *var, int i)
     return 0;
 }
 
+char **input_after(char **input, char **cmd, int i)
+{
+    input = my_dellign(input, i);
+    char *command = NULL;
+
+    for (int j = 0; cmd[j] != NULL; j++)
+        command = my_strcat(cmd[j], " ");
+    if (input[0] == NULL) {
+        input = malloc(sizeof(char *) * 2);
+        input[0] = my_strdup(command);
+        input[1] = NULL;
+    }
+    else
+        input = my_addlign(input, command, i);
+
+    printf("new input entier = \n");
+    my_puttab(input);
+    return input;
+}
+
 void parsing_pipe(var_s *variable, char **input)
 {
     int fd[2];
+    char **cmd = NULL;
+    int check = 0;
 
     if (check_variable(input, variable))
         return;
     if (pipe(fd) == -1)
         return;
     for (int i = 0; input[i]; i++) {
+        if (check == 1)
+            i--;
+        printf("i = %d\n", i);
+        printf("input = %s\n", input[i]);
         if (check_if_separators(input[i])) {
-            handle_separators(input, i, variable);
-            break;
-            // si dernière cmd marche, la mettre en haut de l'input pour
-            // pipe dessus
+            cmd = handle_separators(input, i, variable);
+            check = 1;
         }
-        // input envoyé à cette fonction = transformé pour aller dans pipe
+        if (cmd == NULL && check == 1)
+            continue;
+        if (cmd != NULL)
+            input = input_after(input, cmd, i);
+            // input = cmd;
         if (exec_command_pipe(input, fd, variable, i))
             break;
+        cmd = NULL;
+        check = 0;
     }
     close(fd[0]);
 }
