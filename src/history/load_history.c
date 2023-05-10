@@ -10,6 +10,12 @@
 
 int verif_read(char **commands)
 {
+    if (commands[0] == NULL)
+        return 1;
+    if (commands[1] == NULL)
+        return 1;
+    if (commands[2] != NULL)
+        return 1;
     return 0;
 }
 
@@ -57,7 +63,10 @@ void load_history(var_s *data)
         return;
     }
     for (int i = 0;content_file[i] != NULL;i++) {
-        read_history(content_file[i],data);
+        if (read_history(content_file[i],data) == 1) {
+            free_tab(content_file);
+            return;
+        }
         if (data->history->tail != NULL)
             data->history->lengh = data->history->tail->indice + 1;
     }
