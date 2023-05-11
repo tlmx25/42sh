@@ -44,6 +44,7 @@ void exec_loop(var_s *variable, char **input, int fd[2])
         cmd = NULL;
         check = 0;
     }
+    free_tab(cmd);
 }
 
 void parsing_pipe(var_s *variable, char **input)

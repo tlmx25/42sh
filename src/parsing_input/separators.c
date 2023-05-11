@@ -69,7 +69,11 @@ char **handle_separators(char **input, int i, var_s *var)
     }
     cmd = my_str_to_word_array(line[j], " ");
     if ((check_which_separator(tab_with_sep, cmd[0]) == 2 && check == 1) ||
-    check == 0)
-        return NULL;
+    check == 0) {
+        free(cmd);
+        cmd = NULL;
+    }
+    free_tab(tab_with_sep);
+    free_tab(line);
     return cmd;
 }
