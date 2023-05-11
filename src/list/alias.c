@@ -57,7 +57,7 @@ static int check_alias_loop(char const *command, var_s *var)
     free(alias);
     free_tab(list);
     STATUS = (status == 1) ? 1 : STATUS;
-    my_printf("%z", ALIAS_LOOP);
+    my_printf("%z", (status) ? ALIAS_LOOP : "");
     return status;
 }
 
