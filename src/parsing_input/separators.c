@@ -74,8 +74,9 @@ char **handle_separators(char **input, int i, var_s *var)
         check = check_loop(check, cmd, var, tab_with_sep);
     }
     cmd = my_str_to_word_array(line[j], " ");
-    if ((check_which_separator(tab_with_sep, cmd[0], cmd[1]) == 2 && check == 1) ||
-    (check_which_separator(tab_with_sep, cmd[0], cmd[1]) == 1 && check == 0)) {
+    if ((check_which_separator(tab_with_sep, cmd[0], cmd[1]) == 2 &&
+    check == 1) || (check_which_separator(tab_with_sep, cmd[0], cmd[1]) == 1
+    && check == 0)) {
         free(cmd);
         cmd = NULL;
     }
