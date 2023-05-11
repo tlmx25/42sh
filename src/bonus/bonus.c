@@ -55,7 +55,7 @@ void simple_seb(void)
     free_tab(content_file);
 }
 
-void bonus_jungle(char const **info, var_s *var)
+void bonus_jungle(UNU char const **info, UNU var_s *var)
 {
     int r;
 
