@@ -50,6 +50,8 @@ static int exec_command_pipe(char **input, int fd[2], var_s *var, int i)
     int pid;
 
     input[i] = check_alias(input[i], var);
+    if (STATUS)
+        return 1;
     if (input[i + 1] == NULL && is_built_in(input[i])) {
         manager_last_part_built_in(var, input[i], fd);
         return 1;

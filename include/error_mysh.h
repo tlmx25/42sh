@@ -28,6 +28,7 @@
     #define SH_IS_BUILT_CMD " is a shell built-in\n"
     #define ILL_N_VAR "Illegal variable name.\n"
     #define IS_RDRECT(X) (X == '<' || X == '>') ? 1 : 0
+    #define ALIAS_LOOP "Alias loop.\n"
 
 typedef struct signal_error {
     int signal_num;

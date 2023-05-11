@@ -5,10 +5,27 @@
 ** my_addlign.c
 */
 
+#include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
 char *my_strdup(char const *src);
 void my_puterror(char *error);
+
+char **my_appendline(char **array, char *line) {
+    int len = 0;
+    char **new_array = NULL;
+
+    while (array != NULL && array[len] != NULL)
+        len++;
+    if (line == NULL)
+        return array;
+    new_array = (char**)realloc(array, (len + 2) * sizeof(char*));
+    if (new_array == NULL)
+        return array;
+    new_array[len] = my_strdup(line);
+    new_array[len + 1] = NULL;
+    return new_array;
+}
+
 
 char **my_addlign(char **tab, char *str, int key)
 {
