@@ -34,7 +34,8 @@ static int verify_ambiguous_redirect(char const *input)
             nb_redirect = 0;
         if (input[i] == '>' && input[i + 1] != '>')
             nb_redirect++;
-        if ((input[i] == '|' && nb_redirect) || nb_redirect > 1) {
+        if ((input[i] == '|' && input[i + 1] != '|' && nb_redirect)
+        || nb_redirect > 1) {
             my_printf("%z", AMB_RDRECT);
             return 1;
         }
