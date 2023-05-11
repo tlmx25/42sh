@@ -41,6 +41,7 @@ enum MODE {
     CLASSIC,
     EDITING,
 };
+
 typedef struct var_node {
     char *name;
     char *var;
@@ -109,6 +110,8 @@ void verify_if_redirection(var_s *variable, char *input);
 void parsing_pipe(var_s *variable, char **input);
 int *add_pid(int *actual_list, int pid);
 void erase_name(char **array);
+int check_for_double_pipe(char *input);
+char **tab_cut_separators(char const *str);
 char *get_name(char const *str);
 int is_built_in(const char *command);
 char *get_left_redirection(var_s *variable, char *input);
@@ -131,6 +134,10 @@ var_list *init_dico(char const *filepath);
 void handle_autocompletion(int c, char **input, var_s *var, const int *cursor);
 void clean_list(var_list *list);
 void delete_with_globbing(char const *name, var_list *list);
+int check_if_separators(char *input);
+int exec_command_pipe(char **input, int fd[2], var_s *var, int i);
+char **handle_separators(char **input, int i, var_s *var);
+char **my_str_to_word_pipe(char const *str, char *separators);
 void check_local_var(var_s *var);
 void my_which_command(char const **info, var_s *var);
 void my_where_command(char const **info, var_s *var);

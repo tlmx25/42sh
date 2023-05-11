@@ -11,22 +11,22 @@
 char *my_strdup(char const *src);
 void my_puterror(char *error);
 
-char **my_dellign(char **tab, int key_del)
-{
-    char **temps;
-    int count = 0;
-    int j = 0;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-    for (; tab[count]; count++);
-    if (count < key_del)
-        my_puterror("a key is superior to the size of the tab");
-    temps = malloc(sizeof(char *) * count + 1);
-    for (int i = 0; tab[i]; i++, j++) {
-        if (i == key_del) {
-            j -= 1;
-            continue;
-        }
-        temps[j] = my_strdup(tab[i]);
-    }
-    return temps;
+char **my_delline(char **array, int key)
+{
+    int len = 0;
+
+    if (!array || key < 0)
+        return NULL;
+    for (; array[len] != NULL; len++);
+    if (key >= len)
+        return array;
+    free(array[key]);
+    for (int i = key; i < len - 1; i++)
+        array[i] = array[i + 1];
+    array[len - 1] = NULL;
+    return array;
 }
