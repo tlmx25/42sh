@@ -15,7 +15,7 @@ void origin_seb(void)
     char **content_file = open_read_content_file(
             get_nb_line_file(".origin_seb"), ".origin_seb");
 
-    if (content_file == NULL) { 
+    if (content_file == NULL) {
         free_tab(content_file);
         return;
     }
@@ -30,7 +30,7 @@ void jungle(void)
     char **content_file = open_read_content_file(
             get_nb_line_file(".jungle"), ".jungle");
 
-    if (content_file == NULL) { 
+    if (content_file == NULL) {
         free_tab(content_file);
         return;
     }
@@ -45,7 +45,7 @@ void simple_seb(void)
     char **content_file = open_read_content_file(
             get_nb_line_file(".simple_seb"), ".simple_seb");
 
-    if (content_file == NULL) { 
+    if (content_file == NULL) {
         free_tab(content_file);
         return;
     }
@@ -57,9 +57,10 @@ void simple_seb(void)
 
 void bonus_jungle(char const **info, var_s *var)
 {
-    srand(time(NULL));   
-    int r = rand() % 3;
+    int r;
 
+    srand(time(NULL));
+    r = rand() % 3;
     if (r == 0)
         simple_seb();
     if (r == 1)

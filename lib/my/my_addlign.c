@@ -10,7 +10,8 @@
 char *my_strdup(char const *src);
 void my_puterror(char *error);
 
-char **my_appendline(char **array, char *line) {
+char **my_appendline(char **array, char *line)
+{
     int len = 0;
     char **new_array = NULL;
 
@@ -25,7 +26,6 @@ char **my_appendline(char **array, char *line) {
     new_array[len + 1] = NULL;
     return new_array;
 }
-
 
 char **my_addlign(char **tab, char *str, int key)
 {
