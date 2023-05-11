@@ -51,6 +51,7 @@ SRC += delete_with_globbing.c
 SRC += separators.c
 SRC += cut_separators.c
 SRC += my_str_to_word_pipe.c
+SRC += manage_exec.c
 
 CFLAGS = -I include/ -Wall -Wextra
 

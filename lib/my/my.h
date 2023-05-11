@@ -52,7 +52,6 @@
     int is_alpha(char c);
     int my_nbletter(char *str);
     void my_puterror(char *error);
-    char **my_addlign(char **tab, char *str, int key);
     int my_puttab(char **tab);
     int my_arrsize(char const **arr);
     char *my_putnbrm(long int nbr);
@@ -71,4 +70,6 @@
     char *my_array_to_str_separator(char const **array, char const *separator);
     char my_get_last_char(char const *str, char const *skip_char);
     char **my_delline(char **array, int key);
+    char **my_appendline_index(char **array, char *line, int index);
+
 #endif /* _MY_H_ */
