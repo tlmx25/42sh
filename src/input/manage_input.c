@@ -20,16 +20,20 @@ void manage_input(char **input, var_s *var)
 {
     size_t len = 0;
     int value;
+    var_node *node = find_node("ignoreof", LOCAL_VAR);
 
-    if (isatty(STDIN_FILENO))
-        write(1,"$> ", 3);
+    if (isatty(STDIN_FILENO)) {
+        set_prompt(var);
+        my_printf("%s ", (var->prompt != NULL) ? var->prompt : "$> ");
+    }
     if (isatty(STDIN_FILENO) && var->mode == EDITING)
         value = my_getline(input, var);
     else
         value = (int)getline(input, &len, stdin);
-    if (value == EOF) {
+    if (value == EOF && my_strcmp(IS_NN(node), "on") != 0) {
         free(*input);
         exit_function(NULL, var);
     }
     input[0][value - 1] = '\0';
+    take_history(input[0], var);
 }

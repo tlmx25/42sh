@@ -36,12 +36,13 @@
     char *my_strcpy(char *dest, char const *src);
     int my_showmem(char const *str, int size);
     char *my_strncpy(char *dest, char const *src, int n);
-    char *my_strcat(char *dest, char const *src);
+    char *my_strcat(char const *dest, char const *src);
     char *my_revstr(char *str);
     char *my_strncat(char *dest, char const *src, int nb);
     char *my_strcatn(char *dest, char const *src, int check);
     int my_show_word_array(char * const *tab);
     char *my_strdup(char const *src);
+    char *my_strdup_free(char *src);
     char *my_strcatn(char *dest, char const *src, int check);
     char **my_str_to_word_array(char const *str, char *separators);
     char *concat_params(int ac, char **av);
@@ -63,6 +64,7 @@
     void *my_calloc(size_t size);
     char *my_array_to_str(char const **array);
     char *my_strndup(char const *src, size_t n);
+    char *my_strndup_free(char *src, size_t n);
     char my_get_first_char(char const *str, char const *skip_char);
     size_t my_strlen_skip_char(char const *str, char const *skip_char);
     char *my_clean_string(char *str, char const *delete_char, int free_str);
@@ -71,5 +73,8 @@
     char my_get_last_char(char const *str, char const *skip_char);
     char **my_delline(char **array, int key);
     char **my_appendline_index(char **array, char *line, int index);
-
+    char *my_strcat_free(char *dest, char *src, char free_dest, char free_src);
+    char **my_appendline(char **array, char *line);
+    int is_in_array(char const **array, char const *str);
+    char **my_appendline_index(char **array, char *line, int index);
 #endif /* _MY_H_ */

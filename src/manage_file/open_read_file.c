@@ -47,9 +47,9 @@ char **open_read_content_file(int nb_line, char const *filepath)
     int check_return = 0;
     size_t i = 0;
     FILE *file = fopen(filepath, "r");
-
-    if (file == NULL)
+    if (file == NULL) { free(content_file);
         return NULL;
+    }
     for (; i < (size_t)nb_line && check_return != -1; i++) {
         content_file[i] = NULL;
         check_return = (int)getline(&content_file[i], &len, file);

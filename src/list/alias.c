@@ -5,6 +5,7 @@
 ** alias.c
 */
 
+#include "error_mysh.h"
 #include "file_sh.h"
 #include "mysh.h"
 
@@ -36,12 +37,36 @@ void unset_alias(char const **info, var_s *var)
     open_write_list(LOCAL_VAR, LOCAL_VAR_FILE, var->dup_stdout);
 }
 
+static int check_alias_loop(char const *command, var_s *var)
+{
+    var_node *node = NULL;
+    char *alias = my_strdup(command);
+    char **list = NULL;
+    int status = 0;
+
+    while (!status && alias) {
+        node = find_node(alias, ALIAS);
+        if (node == NULL)
+            break;
+        if (is_in_array(AC list, node->var))
+            status = 1;
+        list = my_appendline(list, node->name);
+        free(alias);
+        alias = my_strdup(node->var);
+    }
+    free(alias);
+    free_tab(list);
+    STATUS = (status == 1) ? 1 : STATUS;
+    my_printf("%z", ALIAS_LOOP);
+    return status;
+}
+
 char *check_alias(char *command, var_s *var)
 {
     var_node *node;
     char **tmp = my_str_to_word_array(command, " \t");
 
-    if (tmp == NULL) {
+    if (tmp == NULL || check_alias_loop(command, var)) {
         free_tab(tmp);
         return command;
     }
@@ -55,5 +80,4 @@ char *check_alias(char *command, var_s *var)
     command = my_array_to_str_separator( AC tmp, " ");
     free_tab(tmp);
     return check_alias(command, var);
-
 }

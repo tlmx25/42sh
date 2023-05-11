@@ -33,6 +33,8 @@ void free_node(var_node **node)
 
 void add_var(char const **info, var_list *list)
 {
+    if (info == NULL)
+        return;
     list->size += 1;
     if (list->head == NULL) {
         list->head = init_env_var_node(info);

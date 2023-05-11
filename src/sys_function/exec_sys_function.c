@@ -9,6 +9,7 @@
 #include "mysh.h"
 #include "error_mysh.h"
 
+
 static const signal_error_t error_signal[] = {
 {SIGSEGV, SEGV},
 {SIGFPE, FPE_ERR},
@@ -18,25 +19,16 @@ static const signal_error_t error_signal[] = {
 char *get_valid_pass(char *command, var_list *list)
 {
     static char **path = NULL;
-    char *path_temp;
 
     if (path == NULL)
         path = my_str_to_word_array(IS_NULL_N(find_node("PATH", list)), ":");
-    if (!access(command, F_OK) && !access(command, X_OK))
+    if (ACSS_X_F)
         return command;
     if (my_get_first_char(command, " \t") == '.') {
         my_printf("%z%z", command, CMD_NOT_FOUND);
         return NULL;
     }
-    for (size_t i = 0; IS_NULL(path)[i]; i++) {
-        path_temp = my_strcat(my_strcat(IS_NULL(path)[i], "/"), command);
-        if (!access(path_temp, F_OK)) {
-            return path_temp;
-        }
-        free(path_temp);
-    }
-    my_printf("%z%z", my_clean_string(command, "\\", 1), CMD_NOT_FOUND);
-    return NULL;
+    return check_path(command, path);
 }
 
 void verify_error_sig(int result_exec)
@@ -66,15 +58,15 @@ void manager_no_exec(char *command)
     exit(1);
 }
 
-void exec_sys_function(var_s *variable, char **input)
+void exec_sys_function(var_s *var, char **input)
 {
     pid_t pid = fork();
     int result_exec;
     char *path_command;
-    char **env = linkedlist_to_array(variable->env_var);
+    char **env = linkedlist_to_array(ENV_VAR);
     if (pid == 0) {
         signal(SIGINT, SIG_DFL);
-        path_command = get_valid_pass(input[0], variable->env_var);
+        path_command = get_valid_pass(input[0], ENV_VAR);
         if (path_command == NULL || env == NULL)
             exit(1);
         result_exec = execve(path_command, input,env);
@@ -84,6 +76,6 @@ void exec_sys_function(var_s *variable, char **input)
     } else {
         waitpid(pid, &result_exec, 0);
         free_tab(env);
-        manager_fork(variable, result_exec);
+        manager_fork(var, result_exec);
     }
 }

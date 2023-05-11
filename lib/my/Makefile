@@ -53,7 +53,8 @@ SRC     =	concat_params.c	\
 		my_array_to_str.c	\
 		my_get_first_char.c	\
 		my_clean_string.c	\
-		my_count_char.c
+		my_count_char.c	\
+		is_in_array.c
 
 BUILD_DIR =	build/
 

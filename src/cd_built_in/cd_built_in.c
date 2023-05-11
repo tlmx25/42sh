@@ -5,9 +5,9 @@
 ** cd_built_in.c
 */
 
+#include "mysh.h"
 #include <string.h>
 #include <errno.h>
-#include "mysh.h"
 #include "error_mysh.h"
 
 char *verify_path(char const *arg, var_list *list)
@@ -45,25 +45,43 @@ void cd_home_argument(char const **arg, var_list *list)
 
 static void manage_path(var_s *var, char *old_path)
 {
-    var_node *node;
+    char **tmp;
+    char *path_tmp;
 
-    node = find_node("OLDPWD", ENV_VAR);
-    free(node->var);
-    node->var = old_path;
-
-    node = find_node("PWD", ENV_VAR);
-    free(node->var);
-    node->var = getcwd(NULL, 0);
+    path_tmp = my_strcat_free("setenv OLDPWD ", old_path, 0, 1);
+    tmp = my_str_to_word_array(path_tmp, " ");
+    set_env(AC tmp, var);
+    free_tab(tmp);
+    free(path_tmp);
+    path_tmp = my_strcat_free("setenv PWD ", getcwd(NULL, 0), 0, 1);
+    tmp = my_str_to_word_array(path_tmp, " ");
+    set_env(AC tmp, var);
+    free_tab(tmp);
+    free(path_tmp);
+    path_tmp = my_strcat_free("set cwd=", getcwd(NULL, 0), 0, 1);
+    tmp = my_str_to_word_array(path_tmp, " ");
+    set_local_var(AC tmp, var);
+    free_tab(tmp);
+    free(path_tmp);
 }
 
 static int manage_chdir(char const **arg, var_s *var, char *old_path)
 {
+    var_node *node = find_node("cwdcmd", ALIAS);
+    int *list_tmp;
+
     if (chdir(verify_path(arg[1], ENV_VAR)) == -1) {
         STATUS = 1;
         my_printf("%z%z%z%z",((arg[1][0] == '-') ? "" : arg[1]),
         ": ", strerror(errno), ".\n");
         free(old_path);
         return 1;
+    }
+    if (node != NULL) {
+        list_tmp = var->pid_list;
+        var->pid_list = NULL;
+        separate_command_comma(var, node->var);
+        var->pid_list = list_tmp;
     }
     return 0;
 }

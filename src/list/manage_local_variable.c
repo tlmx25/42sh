@@ -26,6 +26,7 @@ static void set_multiple_var(char const **info, var_s *var)
         if (name_value == NULL)
             continue;
         if (!my_str_isalpha_env(name_value[0], "set: ")) {
+            my_printf("test : %s\n", name_value[0]);
             STATUS = 1;
             return;
         }
@@ -41,11 +42,14 @@ static void set_multiple_var(char const **info, var_s *var)
 
 void set_local_var(const char **info, var_s *var)
 {
+    if (info == NULL)
+        return;
     if (my_arrsize(info) == 1) {
         print_list_variable(LOCAL_VAR, '\t');
         return;
     }
     set_multiple_var(info, var);
+    LOCAL_VAR->status = 1;
 }
 
 void unset_local_var(char const **info, var_s *var)
@@ -55,7 +59,7 @@ void unset_local_var(char const **info, var_s *var)
         STATUS = 1;
         return;
     }
-    for (size_t i = 1; info[i]; i++)
+    for (size_t i = 1; info[i] && info != NULL; i++)
         delete_with_globbing(info[i], LOCAL_VAR);
     open_write_list(LOCAL_VAR, LOCAL_VAR_FILE, var->dup_stdout);
 }
