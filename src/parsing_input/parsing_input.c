@@ -77,13 +77,14 @@ static int verify_invalid_null_cmd(char const *input)
         if (is_separator(" \t", input[i]))
             continue;
         if (input[i] == '|')
-            pipe_activate += 1;
+            pipe_activate += (input[i + 1] == '|') ? 0 : 1;
         else
             pipe_activate = 0;
-        // if (pipe_activate != 0 && !have_name(&input[i], " \t", ";<>|", 1) && my_strncmp(&input[i], "||", 2) != 0) {
-        //     my_printf("%z", INV_NULL_CMD);
-        //     return 1;
-        // }
+        if (pipe_activate != 0 && !have_name(&input[i], " \t", ";<>|", 1) &&
+        my_strncmp(&input[i], "||", 2) != 0) {
+            my_printf("%z", INV_NULL_CMD);
+            return 1;
+        }
     }
     return 0;
 }
