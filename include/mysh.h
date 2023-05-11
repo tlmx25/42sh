@@ -28,6 +28,7 @@
     #define CHOICE_PROMPT (CMP) ? PROMPT : my_strdup("$> ")
     #define HAVE_NAME_ARG(X) (X[1] == '>') ? &X[1] : X
     #define ACSS_X_F (!access(command, F_OK) && !access(command, X_OK))
+    #define IS_PIPE(X, I) (X[I] == '|' && (X[i + 1] != '|' || X[i - 1] != '|')) ? 1 : 0
     #include <unistd.h>
     #include <string.h>
     #include <sys/types.h>
