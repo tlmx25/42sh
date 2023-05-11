@@ -23,6 +23,7 @@ VPATH += src/input/prompt_function
 VPATH += src/built_in
 VPATH += src/history
 VPATH += src/!
+VPATH += src/bonus
 
 SRC += main.c
 SRC += mysh.c
@@ -75,6 +76,7 @@ SRC += save_history.c
 SRC += get_name_file.c
 SRC += move_in_history.c
 SRC += check_path.c
+SRC += bonus.c
 
 CFLAGS = -I include/ -Wall -Wextra
 

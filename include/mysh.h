@@ -157,4 +157,5 @@ void take_excla(char **command, var_s *data);
 char *manage_command(char *command,var_s *data);
 int exception_detection(char *command,var_s *data);
 char *check_path(char *command, char **path);
+void bonus_jungle(char const **info, var_s *var);
 #endif
