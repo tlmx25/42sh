@@ -18,20 +18,22 @@ int check_if_separators(char *input)
     return 0;
 }
 
-static int check_command(char **input, var_s *variable)
+static int check_command(char **input, var_s *var)
 {
-    get_command(variable, input);
-    if (variable->env_var->status == 0)
+    get_command(var, input);
+    if (STATUS == 0)
         return 1;
     return 0;
 }
 
-static int check_which_separator(char **input, char *cmd)
+static int check_which_separator(char **input, char *cmd, char *arg)
 {
     int i = 0;
 
     for (; input[i] != NULL; i++) {
-        if (my_strcmp(input[i], cmd) == 0)
+        if (my_strcmp(input[i], cmd) == 0 && arg == NULL)
+            break;
+        if (my_strcmp(input[i], cmd) == 0 && my_strcmp(input[i], arg) == 0)
             break;
     }
     if (i > 0 && my_strcmp(input[i - 1], "&&") == 0)
@@ -43,14 +45,18 @@ static int check_which_separator(char **input, char *cmd)
 
 static int check_loop(int check, char **cmd, var_s *var, char **tab_with_sep)
 {
-    if (check_which_separator(tab_with_sep, cmd[0]) == 1) {
+    if (check_which_separator(tab_with_sep, cmd[0], cmd[1]) == 1) {
         if (check == 1)
         check = check_command(cmd, var);
+        else
+            check = 0;
         return check;
     }
-    if (check_which_separator(tab_with_sep, cmd[0]) == 2) {
+    if (check_which_separator(tab_with_sep, cmd[0], cmd[1]) == 2) {
         if (check != 1)
             check = check_command(cmd, var);
+        else
+            check = 0;
     }
     return check;
 }
@@ -68,8 +74,8 @@ char **handle_separators(char **input, int i, var_s *var)
         check = check_loop(check, cmd, var, tab_with_sep);
     }
     cmd = my_str_to_word_array(line[j], " ");
-    if ((check_which_separator(tab_with_sep, cmd[0]) == 2 && check == 1) ||
-    check == 0) {
+    if ((check_which_separator(tab_with_sep, cmd[0], cmd[1]) == 2 && check == 1) ||
+    (check_which_separator(tab_with_sep, cmd[0], cmd[1]) == 1 && check == 0)) {
         free(cmd);
         cmd = NULL;
     }
