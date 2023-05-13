@@ -20,7 +20,8 @@ int check_if_separators(char *input)
 
 static int check_command(char **input, var_s *var)
 {
-    get_command(var, input);
+    char **copy = copyStringArray(input);
+    get_command(var, copy);
     if (STATUS == 0)
         return 1;
     return 0;
@@ -33,7 +34,7 @@ static int check_which_separator(char **input, char *cmd, char *arg)
     for (; input[i] != NULL; i++) {
         if (my_strcmp(input[i], cmd) == 0 && arg == NULL)
             break;
-        if (my_strcmp(input[i], cmd) == 0 && my_strcmp(input[i], arg) == 0)
+        if (my_strcmp(input[i], cmd) == 0 && my_strcmp(input[i + 1], arg) == 0)
             break;
     }
     if (i > 0 && my_strcmp(input[i - 1], "&&") == 0)
@@ -47,16 +48,12 @@ static int check_loop(int check, char **cmd, var_s *var, char **tab_with_sep)
 {
     if (check_which_separator(tab_with_sep, cmd[0], cmd[1]) == 1) {
         if (check == 1)
-        check = check_command(cmd, var);
-        else
-            check = 0;
+            check = check_command(cmd, var);
         return check;
     }
     if (check_which_separator(tab_with_sep, cmd[0], cmd[1]) == 2) {
         if (check != 1)
             check = check_command(cmd, var);
-        else
-            check = 0;
     }
     return check;
 }
@@ -69,9 +66,11 @@ char **handle_separators(char **input, int i, var_s *var)
     int check = check_command(cmd, var);
     int j = 1;
 
+    STATUS = 0;
     for (; line[j + 1] != NULL; j++) {
         cmd = my_str_to_word_array(line[j], " ");
         check = check_loop(check, cmd, var, tab_with_sep);
+        STATUS = 0;
     }
     cmd = my_str_to_word_array(line[j], " ");
     if ((check_which_separator(tab_with_sep, cmd[0], cmd[1]) == 2 &&

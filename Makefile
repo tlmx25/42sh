@@ -48,6 +48,7 @@ SRC += free_var.c
 SRC += alias.c
 SRC += manage_local_variable.c
 SRC += my_getline.c
+SRC += copy_array.c
 SRC += manage_string.c
 SRC += create_dico.c
 SRC += manage_input.c

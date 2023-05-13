@@ -141,6 +141,7 @@ int exec_command_pipe(char **input, int fd[2], var_s *var, int i);
 char **handle_separators(char **input, int i, var_s *var);
 char **my_str_to_word_pipe(char const *str, char *separators);
 void check_local_var(var_s *var);
+char** copyStringArray(char** source);
 void my_which_command(char const **info, var_s *var);
 void my_where_command(char const **info, var_s *var);
 char *my_str_cat_char(char *str, int c, int cursor);
