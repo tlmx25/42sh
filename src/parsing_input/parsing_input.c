@@ -34,7 +34,8 @@ static int verify_ambiguous_redirect(char const *input)
             nb_redirect = 0;
         if (input[i] == '>' && input[i + 1] != '>')
             nb_redirect++;
-        if ((input[i] == '|' && nb_redirect) || nb_redirect > 1) {
+        if ((nb_redirect && IS_PIPE(input, i))
+        || nb_redirect > 1) {
             my_printf("%z", AMB_RDRECT);
             return 1;
         }
@@ -77,12 +78,12 @@ static int verify_invalid_null_cmd(char const *input)
         if (is_separator(" \t", input[i]))
             continue;
         if (input[i] == '|')
-            pipe_activate += 1;
+            pipe_activate += (input[i + 1] == '|') ? 0 : 1;
         else
             pipe_activate = 0;
-        if (pipe_activate != 0 && !have_name(&input[i], " \t", ";<>|", 1)) {
-            my_printf("%z", INV_NULL_CMD);
-            return 1;
+        if (pipe_activate != 0 && !have_name(&input[i], " \t", ";<>|", 1)
+        && my_strncmp(&input[i], "||", 2) != 0) {
+            return my_printf("%z", INV_NULL_CMD);
         }
     }
     return 0;

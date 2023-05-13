@@ -22,21 +22,28 @@
     #define ENV_VAR var->env_var
     #define ALIAS var->alias
     #define DICO var->dico
+    #define HISTORY var->history
     #define PROMPT var->prompt
     #define CMP my_strcmp(PROMPT, "$> ") == 0
     #define CHOICE_PROMPT (CMP) ? PROMPT : my_strdup("$> ")
     #define HAVE_NAME_ARG(X) (X[1] == '>') ? &X[1] : X
+    #define ACSS_X_F (!access(command, F_OK) && !access(command, X_OK))
+    #define N_IS_PIPE(X, I) (X[i + 1] != '|' || X[i - 1] != '|')
+    #define IS_PIPE(X, I) (X[I] == '|' && N_IS_PIPE(X, I)) ? 1 : 0
     #include <unistd.h>
     #include <string.h>
     #include <sys/types.h>
     #include <sys/wait.h>
     #include "my.h"
     #include "myprintf.h"
+    #include "history.h"
+    #include <time.h>
 
 enum MODE {
     CLASSIC,
     EDITING,
 };
+
 typedef struct var_node {
     char *name;
     char *var;
@@ -57,6 +64,7 @@ typedef struct var {
     var_list *local_var;
     var_list *alias;
     var_list *dico;
+    history_t *history;
     int fd_redirection_out;
     int fd_redirection_in;
     int dup_stdout;
@@ -104,10 +112,14 @@ void verify_if_redirection(var_s *variable, char *input);
 void parsing_pipe(var_s *variable, char **input);
 int *add_pid(int *actual_list, int pid);
 void erase_name(char **array);
+int check_for_double_pipe(char *input);
+char **tab_cut_separators(char const *str);
 char *get_name(char const *str);
 int is_built_in(const char *command);
 char *get_left_redirection(var_s *variable, char *input);
 var_s *init_sh(char const **env);
+void load_history(var_s *data);
+void save_history(var_s *var, int fd_stdout);
 void open_write_list(var_list *list, char const *filepath, int fd_stdout);
 var_list *init_list_variable(char const *filepath);
 void free_var(var_s *var);
@@ -121,10 +133,15 @@ int check_variable(char **all_command, var_s *var);
 int my_getline(char **input, var_s *var);
 void manage_input(char **input, var_s *var);
 var_list *init_dico(char const *filepath);
-void handle_autocompletion(int c, char **input, var_s *var, int *cursor);
+void handle_autocompletion(int c, char **input, var_s *var, const int *cursor);
 void clean_list(var_list *list);
 void delete_with_globbing(char const *name, var_list *list);
+int check_if_separators(char *input);
+int exec_command_pipe(char **input, int fd[2], var_s *var, int i);
+char **handle_separators(char **input, int i, var_s *var);
+char **my_str_to_word_pipe(char const *str, char *separators);
 void check_local_var(var_s *var);
+char** copystringarray(char** source);
 void my_which_command(char const **info, var_s *var);
 void my_where_command(char const **info, var_s *var);
 char *my_str_cat_char(char *str, int c, int cursor);
@@ -141,4 +158,14 @@ void backslash_v(void);
 void backslash_r(void);
 void set_status_variable(var_s *var);
 void set_prompt(var_s *var);
+void history(char const **info, var_s *var);
+history_t *init_history(void);
+void take_history(char *, var_s *);
+void clear_history(var_s *);
+void free_history(var_s *);
+void take_excla(char **command, var_s *data);
+char *manage_command(char *command,var_s *data);
+int exception_detection(char *command,var_s *data);
+char *check_path(char *command, char **path);
+void bonus_jungle(char const **info, var_s *var);
 #endif

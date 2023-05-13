@@ -16,6 +16,8 @@ static int init_list(var_s *var, char const **env)
     LOCAL_VAR = init_list_variable(LOCAL_VAR_FILE);
     ALIAS = init_list_variable(ALIAS_FILE);
     DICO = init_dico(DICO_FILE);
+    HISTORY = init_history();
+    load_history(var);
     if (ENV_VAR == NULL || LOCAL_VAR == NULL || ALIAS == NULL) {
         return 84;
     }
