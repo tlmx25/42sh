@@ -7,7 +7,7 @@
 
 #include "mysh.h"
 
-char** copyStringArray(char** source)
+char** copystringarray(char** source)
 {
     int size = 0;
     char **destination;

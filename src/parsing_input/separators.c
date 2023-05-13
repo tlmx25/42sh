@@ -78,8 +78,6 @@ char **handle_separators(char **input, int i, var_s *var)
     && check == 0)) {
         free(cmd);
         cmd = NULL;
-    }
-    free_tab(tab_with_sep);
-    free_tab(line);
+    } free_tab(tab_with_sep);free_tab(line);
     return cmd;
 }
