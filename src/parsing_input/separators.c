@@ -20,7 +20,7 @@ int check_if_separators(char *input)
 
 static int check_command(char **input, var_s *var)
 {
-    char **copy = copyStringArray(input);
+    char **copy = copystringarray(input);
     get_command(var, copy);
     if (STATUS == 0)
         return 1;
