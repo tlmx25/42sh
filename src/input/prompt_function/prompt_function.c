@@ -50,7 +50,7 @@ char *get_directory_name_without_home(UNU var_s *var)
     char *tmp = NULL;
     var_node *node = find_node("HOME", ENV_VAR);
 
-    if (name == NULL) {
+    if (name == NULL || node == NULL) {
         free(name);
         return NULL;
     }
