@@ -12,7 +12,7 @@
 
 ### Instructions
 
-1. Clonez le dépôt : `git clone https://github.com/EpitechPromo2027/B-PSU-200-REN-2-1-42sh-arthur.doriel.git`
+1. Clonez le dépôt : `git clone https://github.com/EpitechPromo2027/B-PSU-200-REN-2-1-42sh-arthur.doriel.git
 2. Allez dans le répertoire du projet : `cd 42sh`
 3. Compilez le programme : `make`
 4. Lancez le shell : `./42sh`
@@ -27,13 +27,15 @@
 * Les variables d'environnement
 * L'historique des commandes
 * Les commandes intégrées (cd, echo, exit)
+* Les opérateurs logiques
 
 42sh prend également en charge les fonctionnalités avancées suivantes :
 
 * L'expansion des alias
-* variable local
 * L'auto-complétion des commandes et des noms de fichiers
 * La coloration syntaxique de la ligne de commande
+* L'affichage du temps de chaque commande exécutée
+* La possibilité de charger des plugins
 
 ## Utilisation
 
@@ -62,6 +64,18 @@ Pour connecter la sortie d'une commande à l'entrée d'une autre commande, utili
 
 ```shell
 $ ls | grep fichier
+```
+
+### Opérateurs logiques
+
+Pour effectuer une commande en fonction d'un opérateur, utilisez le symbole "&&" afin d'exécuter une commande si sa précédente a fonctionné ou utilisez le symbole "||" afin d'éxécuter une commande si sa précédente a échoué :
+
+```shell
+$ ls && pwd
+```
+
+```shell
+$ ls || pwd
 ```
 
 ### Historique des commandes
@@ -123,32 +137,7 @@ La commande `set` permet aussi de définir ou de modifier une variable local :
 ```shell
 $ set VAR=value VAR2=value2
 ```
-Le 42sh prend en compte certaine variable special :
-* `cwd` : Le nom de chemin complet du répertoire courant
-* `ignoreof` : si la variable est positionnée sur on le CTRL-D est ignoré
-* `?` : qui permet via le `$?` de recuperer le dernier retour de la function effectué
-* `prompt`: permet de définir un prompt personalisé grace à ces flags :
-  * `%~`: affiche le repertoire courant sans le $HOME (voir environement)
-  * `%/`: affiche le repertoire courant
-  * `%m` : affiche le nom d'hôte
-  * `%n`: affiche le nom d'utilisateur
-  * `%B (%b)` : Démarrer (stopper) le mode gras
-  * `%U (%u)` : Démarrer (stopper) le mode surligné
-  * `%I (%i)` : Démarrer (stopper) le mode italique
-  * `%S (%s)` : Démarrer (stopper) le mode clignotant (seulement sur les terminaux compatible)
-  * `%O (%r)` : Démarrer (stopper) le mode inversé
-  * `%o (%r)` : Démarrer (stopper) le mode invisible (seulement sur les terminaux compatible)
-  * `%F (%r)` : Démarrer (stopper) le mode barré
 
-Il est aussi possible d'appliquer certaine couleur sur la zone souhaité du prompt avec les flags :
-  * `%R` : Rouge
-  * `%G` : Vert
-  * `%Y` : Jaune
-  * `%C` : Bleu
-  * `%V` : Violet
-  * `%c` : Cyan
-  * `%g` : Gris
-Le flag `%r` rétablie quand à lui la couleur par default
 ### Commande `unset`
 
 La commande `unset` permet de supprimer une variable d'environnement ou un alias :
@@ -164,9 +153,6 @@ La commande `alias` permet de définir un alias pour une commande :
 ```shell
 $ alias ll 'ls -l'
 ```
-Le 42sh prend en compte certain alias special :
-* `precmd` : execute la commande donnée juste avant l'affichage du prompt
-* `cwdcmd` : execute la commande donnée à chaque changement de directory
 
 ### Commande `unalias`
 
